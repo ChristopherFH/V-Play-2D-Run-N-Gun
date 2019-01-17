@@ -2,7 +2,7 @@ import QtQuick 2.0
 
 Row {
     signal playPressed()
-    signal networkPressed()
+    signal scorePressed()
 
     spacing: 18
     anchors.horizontalCenter: parent.horizontalCenter
@@ -27,7 +27,7 @@ Row {
 
     MenuButton {
         onClicked: {
-            networkPressed()
+            scorePressed()
         }
         source: "../../assets/img/pixel-art/uipack_fixed/PNG/blue_button03.png"
 

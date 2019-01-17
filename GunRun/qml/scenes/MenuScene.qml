@@ -10,6 +10,7 @@ SceneBase {
     signal selectLevelPressed
     // signal indicating that the creditsScene should be displayed
     signal creditsPressed
+    signal playerJumpPressed
 
     // background
     Rectangle {
@@ -33,6 +34,7 @@ SceneBase {
     }
 
     Player {
+        id: player
         anchors.bottom: ground.top
         anchors.bottomMargin: -ground.height / 1.5
         resetX: menuScene.gameWindowAnchorItem.width/2
@@ -43,9 +45,15 @@ SceneBase {
     Menu {
         anchors.centerIn: parent
 
-        onNetworkPressed: parent.networkPressed()
+        onScorePressed: scoreAction()
         onPlayPressed: gamePressed()
     }
 
+    function scoreAction() {
+        player.shoot()
+    }
 
+    function gamePressed() {
+        player.die()
+    }
 }
