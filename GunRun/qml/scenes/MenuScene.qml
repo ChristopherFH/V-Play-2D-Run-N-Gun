@@ -1,6 +1,7 @@
 import VPlay 2.0
 import QtQuick 2.0
 import "../common"
+import "../entities"
 
 SceneBase {
     id: menuScene
@@ -17,36 +18,34 @@ SceneBase {
     }
 
     // the "logo"
-    Text {
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: 30
-        font.pixelSize: 30
-        color: "#e9e9e9"
-        text: "MultiSceneMultiLevel"
+    Image {
+        scale: 0.6
+        anchors.topMargin: 15
+        anchors.horizontalCenter: menuScene.horizontalCenter
+        anchors.top:  menuScene.top
+        source: "../../assets/img/KnightRun.png"
+    }
+
+    Ground {
+        id: ground
+        anchors.horizontalCenter: menuScene.gameWindowAnchorItem.horizontalCenter
+        anchors.bottom: menuScene.gameWindowAnchorItem.bottom
+    }
+
+    Player {
+        anchors.bottom: ground.top
+        anchors.bottomMargin: -ground.height / 1.5
+        resetX: menuScene.gameWindowAnchorItem.width/2
+        resetY: menuScene.gameWindowAnchorItem.height/2
     }
 
     // menu
-    Column {
+    Menu {
         anchors.centerIn: parent
-        spacing: 10
-        MenuButton {
-            text: "Levels"
-            onClicked: selectLevelPressed()
-        }
-        MenuButton {
-            text: "Credits"
-            onClicked: creditsPressed()
-        }
+
+        onNetworkPressed: parent.networkPressed()
+        onPlayPressed: gamePressed()
     }
 
-    // a little V-Play logo is always nice to have, right?
-    Image {
-        source: "../../assets/img/vplay-logo.png"
-        width: 60
-        height: 60
-        anchors.right: menuScene.gameWindowAnchorItem.right
-        anchors.rightMargin: 10
-        anchors.bottom: menuScene.gameWindowAnchorItem.bottom
-        anchors.bottomMargin: 10
-    }
+
 }

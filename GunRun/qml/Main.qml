@@ -7,6 +7,7 @@ GameWindow {
     screenWidth: 960
     screenHeight: 640
 
+
     // You get free licenseKeys from https://v-play.net/licenseKey
     // With a licenseKey you can:
     //  * Publish your games & apps for the app stores
@@ -18,6 +19,17 @@ GameWindow {
     EntityManager {
         id: entityManager
     }
+
+    FontLoader {
+        id: fontloader
+        source: "../assets/font/Pixeled.ttf"
+
+        Component.onCompleted: {
+          if (system.platform === System.Android)
+            name = "Pixeled"
+        }
+      }
+
 
     // menu scene
     MenuScene {
@@ -38,30 +50,6 @@ GameWindow {
                     Qt.quit()
             }
         }
-    }
-
-    // scene for selecting levels
-    SelectLevelScene {
-        id: selectLevelScene
-        onLevelPressed: {
-            // selectedLevel is the parameter of the levelPressed signal
-            gameScene.setLevel(selectedLevel)
-            window.state = "game"
-
-        }
-        onBackButtonPressed: window.state = "menu"
-    }
-
-    // credits scene
-    CreditsScene {
-        id: creditsScene
-        onBackButtonPressed: window.state = "menu"
-    }
-
-    // game scene to play a level
-    GameScene {
-        id: gameScene
-        onBackButtonPressed: window.state = "selectLevel"
     }
 
     // menuScene is our first scene, so set the state to menu initially
