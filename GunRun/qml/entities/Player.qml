@@ -11,7 +11,7 @@ EntityBase {
 
     width: collider.radius * 2
     height: collider.radius * 2
-
+    property int realFrameRate: 6
 
     signal gameOver()
 
@@ -19,7 +19,7 @@ EntityBase {
     scale: 0.5
 
     onGameOver: {
-        spriteSequence.running = false
+        knightSprite.running = false
     }
 
     TexturePackerSpriteSequenceVPlay {
@@ -30,7 +30,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "walk"
             source: "../../assets/img/knight.json"
-            frameRate: 6
+            frameRate: realFrameRate
             frameNames: [
                 "Knight_walk_01.png",
                 "Knight_walk_02.png",
@@ -45,13 +45,23 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "cast"
             source: "../../assets/img/knight.json"
-            frameRate: 5
-            to: {"walk": 1}
+            frameRate: realFrameRate
+            to: {"castend": 1}
             frameNames: [
                 "Knight_cast_01.png",
                 "Knight_cast_02.png",
                 "Knight_cast_03.png",
-                "Knight_cast_04.png",
+                "Knight_cast_04.png"
+            ]
+
+        }
+
+        TexturePackerSpriteVPlay {
+            name: "castend"
+            source: "../../assets/img/knight.json"
+            frameRate: realFrameRate
+            to: {"walk": 1}
+            frameNames: [
                 "Knight_cast_05.png"
             ]
         }
@@ -59,7 +69,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "jump"
             source: "../../assets/img/knight.json"
-            frameRate: 2
+            frameRate: realFrameRate
             to: {"walk": 1}
             frameNames: [
                 "Knight_jump_01.png",
@@ -70,7 +80,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "die"
             source: "../../assets/img/knight.json"
-            frameRate: 8
+            frameRate: realFrameRate
             to: {"walk": 1}
             frameNames: [
                 "Knight_die_01.png",
@@ -97,7 +107,7 @@ EntityBase {
         player.x = resetX
         player.y = resetY
         collider.body.linearVelocity = Qt.point(0,0)
-        spriteSequence.running = true
+        knightSprite.running = true
     }
 
     function die() {

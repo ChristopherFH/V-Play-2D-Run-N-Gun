@@ -55,5 +55,9 @@ DISTFILES += \
     qml/scenes/Menu.qml \
     qml/Player.qml \
     qml/scenes/GameScene.qml \
-    qml/common/Random.qml
+    qml/common/Random.qml \
+    qml/entities/FireBall.qml \
+    qml/entities/Dragon.qml \
+    qml/common/GroundElement.qml \
+    qml/common/BorderElement.qml
 

@@ -18,6 +18,8 @@ SceneBase {
         id: ground
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
+        width: gameScene.gameWindowAnchorItem.width
+        height: 20
     }
 
     Player {

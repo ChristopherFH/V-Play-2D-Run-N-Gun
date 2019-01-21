@@ -2,37 +2,27 @@ import VPlay 2.0
 import QtQuick 2.0
 
 Item {
-    width: spriteSequence.width
-    height: spriteSequence.height
+    property int speed: 150
+    id: ground
 
-    SpriteSequenceVPlay {
-        id: spriteSequence
-
-        anchors.centerIn: parent
-
-        SpriteVPlay {
-            name: "running"
-
-            frameCount: 2
-            frameRate: 4
-
-            frameWidth: 552
-            frameHeight: 90
-            source: "../../assets/img/landSprite.png"
-
-        }
+    Rectangle {
+        id: rect
+        anchors.fill: ground
+        color: "green"
     }
 
-//        Rectangle {
-//            anchors.fill: parent
-//            color: "#80ff0000"
+    Component.onCompleted: {
+    }
+
+//    MovementAnimation {
+//        id: animation
+//        target: parent
+//        property: "x"
+//        velocity: -speed
+//        running: false
+//        minPropertyValue: scene.gameWindowAnchorItem.x-pipeElement.width*1.5
+//        onLimitReached: {
+//            reset()
 //        }
-
-    function reset() {
-        spriteSequence.running = true
-    }
-
-    function stop() {
-        spriteSequence.running = false
-    }
+//    }
 }

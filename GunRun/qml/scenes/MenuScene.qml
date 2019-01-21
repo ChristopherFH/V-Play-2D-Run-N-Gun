@@ -21,6 +21,8 @@ SceneBase {
         id: ground
         anchors.horizontalCenter: menuScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: menuScene.gameWindowAnchorItem.bottom
+        width: menuScene.gameWindowAnchorItem.width
+        height: 20
     }
 
     Player {
@@ -30,6 +32,7 @@ SceneBase {
         resetX: menuScene.gameWindowAnchorItem.width/2
         resetY: menuScene.gameWindowAnchorItem.height/2
     }
+
 
     // menu
     Menu {

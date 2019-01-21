@@ -1,5 +1,6 @@
 import VPlay 2.0
 import QtQuick 2.0
+import "../entities"
 
 Scene {
     id: sceneBase
@@ -27,6 +28,24 @@ Scene {
     Image {
         anchors.fill: parent.gameWindowAnchorItem
         source: "../../assets/img/background/bg_layer4.png"
+    }
+
+    BorderElement {
+        id: leftBorder
+        anchors.bottom: sceneBase.bottom
+        anchors.right: sceneBase.gameWindowAnchorItem.left
+        anchors.rightMargin: -100
+        width: 20
+        height: sceneBase.height
+    }
+
+    BorderElement {
+        id: rightBorder
+        anchors.bottom: sceneBase.bottom
+        anchors.left: sceneBase.gameWindowAnchorItem.right
+        anchors.leftMargin: -100
+        width: 20
+        height: sceneBase.height
     }
 
     // every change in opacity will be done with an animation
