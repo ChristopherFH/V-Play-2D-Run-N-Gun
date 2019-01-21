@@ -13,9 +13,21 @@ SceneBase {
     signal playerJumpPressed
 
     // background
-    Rectangle {
+    Image {
         anchors.fill: parent.gameWindowAnchorItem
-        color: "#47688e"
+        source: "../../assets/img/background/bg_layer1.png"
+    }
+    Image {
+        anchors.fill: parent.gameWindowAnchorItem
+        source: "../../assets/img/background/bg_layer2.png"
+    }
+    Image {
+        anchors.fill: parent.gameWindowAnchorItem
+        source: "../../assets/img/background/bg_layer3.png"
+    }
+    Image {
+        anchors.fill: parent.gameWindowAnchorItem
+        source: "../../assets/img/background/bg_layer4.png"
     }
 
     // the "logo"

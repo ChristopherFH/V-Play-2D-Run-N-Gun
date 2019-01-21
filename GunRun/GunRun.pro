@@ -53,4 +53,5 @@ macx {
 DISTFILES += \
     qml/common/Ground.qml \
     qml/scenes/Menu.qml \
-    qml/Player.qml
+    qml/Player.qml \
+    qml/common/Random.qml
