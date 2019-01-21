@@ -35,8 +35,30 @@ GameWindow {
     MenuScene {
         id: menuScene
         // listen to the button signals of the scene and change the state according to it
-        onSelectLevelPressed: window.state = "selectLevel"
-        onCreditsPressed: window.state = "credits"
+        onStartGame: {
+            state = "game"
+            activeScene = gameScene
+        }
+
+        // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
+        onBackButtonPressed: {
+            nativeUtils.displayMessageBox(qsTr("Really quit the game?"), "", 2);
+        }
+        // listen to the return value of the MessageBox
+        Connections {
+            target: nativeUtils
+            onMessageBoxFinished: {
+                // only quit, if the activeScene is menuScene - the messageBox might also get opened from other scenes in your code
+                if(accepted && window.activeScene === menuScene)
+                    Qt.quit()
+            }
+        }
+    }
+
+    // menu scene
+    GameScene {
+        id: gameScene
+
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
         onBackButtonPressed: {
             nativeUtils.displayMessageBox(qsTr("Really quit the game?"), "", 2);
@@ -62,16 +84,6 @@ GameWindow {
             name: "menu"
             PropertyChanges {target: menuScene; opacity: 1}
             PropertyChanges {target: window; activeScene: menuScene}
-        },
-        State {
-            name: "selectLevel"
-            PropertyChanges {target: selectLevelScene; opacity: 1}
-            PropertyChanges {target: window; activeScene: selectLevelScene}
-        },
-        State {
-            name: "credits"
-            PropertyChanges {target: creditsScene; opacity: 1}
-            PropertyChanges {target: window; activeScene: creditsScene}
         },
         State {
             name: "game"

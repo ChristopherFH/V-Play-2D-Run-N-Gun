@@ -6,10 +6,7 @@ import "../entities"
 SceneBase {
     id: menuScene
 
-    // signal indicating that the selectLevelScene should be displayed
-    signal selectLevelPressed
-    // signal indicating that the creditsScene should be displayed
-    signal creditsPressed
+    signal startGame()
     signal playerJumpPressed
 
     // background
@@ -45,15 +42,12 @@ SceneBase {
     Menu {
         anchors.centerIn: parent
 
-        onScorePressed: scoreAction()
+//        onScorePressed: scoreAction()
         onPlayPressed: gamePressed()
     }
 
-    function scoreAction() {
-        player.shoot()
-    }
 
     function gamePressed() {
-        player.die()
+
     }
 }
