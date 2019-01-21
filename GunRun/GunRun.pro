@@ -54,4 +54,6 @@ DISTFILES += \
     qml/common/Ground.qml \
     qml/scenes/Menu.qml \
     qml/Player.qml \
-    qml/scenes/GameScene.qml
+    qml/scenes/GameScene.qml \
+    qml/common/Random.qml
+
