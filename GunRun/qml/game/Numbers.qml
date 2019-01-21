@@ -4,18 +4,18 @@ import "../entities"
 
 Item {
     id: numbers
-    width: row.width
-    height: row.heigth
-    property string color
+//    width: row.width
+//    height: row.heigth
+//    property string color
     property int number: 0
 
-    property string imagePath: "../../assets/img/"
+//    property string imagePath: "../../assets/img/"
 
-    function truncate(_value)
-    {
-        if (_value<0) return Math.ceil(_value);
-        else return Math.floor(_value);
-    }
+//    function truncate(_value)
+//    {
+//        if (_value<0) return Math.ceil(_value);
+//        else return Math.floor(_value);
+//    }
 
 //    onNumberChanged: {
 //        if(number > 9999) number = 9999

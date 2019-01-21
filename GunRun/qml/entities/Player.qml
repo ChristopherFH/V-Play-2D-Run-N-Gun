@@ -13,7 +13,7 @@ EntityBase {
     height: collider.radius * 2
 
 
-    signal gameOver()
+    signal gameOver() 
 
     Component.onCompleted: reset()
     scale: 0.5
