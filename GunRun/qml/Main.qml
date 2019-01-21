@@ -36,8 +36,7 @@ GameWindow {
         id: menuScene
         // listen to the button signals of the scene and change the state according to it
         onStartGame: {
-            state = "game"
-            activeScene = gameScene
+            window.state = "game"
         }
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application

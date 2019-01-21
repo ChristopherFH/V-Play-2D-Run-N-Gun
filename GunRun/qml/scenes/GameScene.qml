@@ -14,12 +14,6 @@ SceneBase {
         anchors.fill: parent
     }
 
-    // background
-    Rectangle {
-        anchors.fill: parent.gameWindowAnchorItem
-        color: "#47688e"
-    }
-
     Ground {
         id: ground
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter

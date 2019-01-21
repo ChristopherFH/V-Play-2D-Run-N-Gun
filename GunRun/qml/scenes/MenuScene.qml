@@ -7,25 +7,6 @@ SceneBase {
     id: menuScene
 
     signal startGame()
-    signal playerJumpPressed
-
-    // background
-    Image {
-        anchors.fill: parent.gameWindowAnchorItem
-        source: "../../assets/img/background/bg_layer1.png"
-    }
-    Image {
-        anchors.fill: parent.gameWindowAnchorItem
-        source: "../../assets/img/background/bg_layer2.png"
-    }
-    Image {
-        anchors.fill: parent.gameWindowAnchorItem
-        source: "../../assets/img/background/bg_layer3.png"
-    }
-    Image {
-        anchors.fill: parent.gameWindowAnchorItem
-        source: "../../assets/img/background/bg_layer4.png"
-    }
 
     // the "logo"
     Image {
@@ -55,11 +36,8 @@ SceneBase {
         anchors.centerIn: parent
 
 //        onScorePressed: scoreAction()
-        onPlayPressed: gamePressed()
-    }
-
-
-    function gamePressed() {
-
+        onPlayPressed: {
+            startGame()
+        }
     }
 }
