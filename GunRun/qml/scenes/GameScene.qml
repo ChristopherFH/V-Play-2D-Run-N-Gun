@@ -7,7 +7,13 @@ import "../game"
 SceneBase {
     id: gameScene
 
+    onActiveFocusChanged: {
+        updatePositioningTimer.start()
+        updateGamestartTimer.start()
+    }
+
     property int score: 0
+    property int gameStartCount: 3
 
     Level {
         id: level
@@ -20,6 +26,15 @@ SceneBase {
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         width: gameScene.gameWindowAnchorItem.width
         height: 20
+    }
+
+    Text {
+        id: count
+        text: gameStartCount.toString()
+        color: "white"
+        anchors.centerIn: parent
+        font.pixelSize: 25
+        font.family: fontloader.name
     }
 
     Player {
@@ -36,35 +51,68 @@ SceneBase {
         }
     }
 
+    Timer {
+         id: updatePositioningTimer
+         interval: 200
+         running: false
+         repeat: true
+         onTriggered: gameScene.updatePosition()
+    }
+
+    Timer {
+         id: updateGamestartTimer
+         interval: 1000
+         running: false
+         repeat: true
+         onTriggered: gameScene.updateCount()
+    }
+
     MouseArea {
         id: mouseControl
         anchors.fill: gameScene.gameWindowAnchorItem
         onPressed: {
-            if(gameIsRunning) {
+            if(gameScene.state == "running") {
 
             }
         }
     }
 
-    Numbers {
-        anchors.horizontalCenter: parent.horizontalCenter
-        y: 30
-        number: score
+//    Numbers {
+//        anchors.horizontalCenter: parent.horizontalCenter
+//        y: 30
+//        number: score
+//    }
+
+    function updateCount(){
+        if(gameStartCount >= 0){
+            count.text = (gameStartCount--).toString()
+        }else{
+            updateGamestartTimer.stop()
+            level.start()
+            gameScene.state = "running"
+            count.text = ""
+        }
     }
 
-
-    function initGame() {
-        player.reset()
-        level.reset()
-        score = 0
+    function updatePosition() {
+        if(player.x >= gameScene.gameWindowAnchorItem.width / 5){
+            player.x  -= 8
+        }else{
+            updatePositioningTimer.stop()
+        }
     }
 
     function startGame() {
-        level.start()
+        player.reset()
+        level.reset()
+        score = 0
+        updatePositioningTimer.start()
+        updateGamestartTimer.start()
     }
 
     function stopGame() {
         level.stop()
+        gameScene.state = "gameOver"
     }
 
 }
