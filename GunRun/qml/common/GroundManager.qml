@@ -3,27 +3,43 @@ import QtQuick 2.0
 
 EntityBase {
     property int speed: 150
-    id: ground
+    id: groundManager
+    entityType: "groundManager"
 
     property EntityBase borderLeft
     property EntityBase borderRight
+    property GroundElement lastElement
 
-    Component.onCompleted: {
-        borderLeft = EntityManager.getEntityById("border-left")
-        borderRight = EntityManager.getEntityById("border-right")
+    property bool stopped: false
 
-        createInitialGround()
+
+    function start() {
+        borderLeft = entityManager.getEntityById("border-left")
+        borderRight = entityManager.getEntityById("border-right")
+
+        spawnAt(0)
+
+        while(lastElement.getX() <= (borderRight.x + borderRight.width)) {
+            spawnNext()
+        }
     }
 
-    Rectangle {
-        id: rect
-        anchors.fill: ground
-        color: "green"
+    function stop() {
+        stopped = true
     }
 
-    function createInitialGround() {
-
+    function spawnNext() {
+//        console.log("Spawn next")
+        if(!stopped)
+            spawnAt(lastElement.getX())
     }
+
+    function spawnAt(atX) {
+        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement.qml"),{"resetX": atX ,"resetY": groundManager.y})
+        lastElement = entityManager.getLastAddedEntity()
+        lastElement.spawnNext.connect(spawnNext)
+    }
+
 
 //    MovementAnimation {
 //        id: animation

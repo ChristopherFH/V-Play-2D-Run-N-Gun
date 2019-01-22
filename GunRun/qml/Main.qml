@@ -7,6 +7,10 @@ GameWindow {
     screenWidth: 960
     screenHeight: 640
 
+    Component.onCompleted: {
+        console.log("GameWindow completed!")
+        menuScene.startScene()
+    }
 
     // You get free licenseKeys from https://v-play.net/licenseKey
     // With a licenseKey you can:
@@ -32,10 +36,10 @@ GameWindow {
         source: "../assets/font/Pixeled.ttf"
 
         Component.onCompleted: {
-          if (system.platform === System.Android)
-            name = "Pixeled"
+            if (system.platform === System.Android)
+                name = "Pixeled"
         }
-      }
+    }
 
 
     // menu scene
@@ -44,7 +48,8 @@ GameWindow {
         // listen to the button signals of the scene and change the state according to it
         onStartGame: {
             window.state = "game"
-            gameScene.startGame()
+            menuScene.stopScene()
+            gameScene.startScene()
         }
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application

@@ -4,6 +4,7 @@ import QtQuick 2.0
 EntityBase {
     id: fireball
     entityType: "projectile"
+    poolingEnabled: true
 
     scale: 0.3
     width: fireballSprite.width

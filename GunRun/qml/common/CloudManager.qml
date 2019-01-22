@@ -5,10 +5,6 @@ EntityBase {
     id: cloudManager
     entityType: "cloudManager"
 
-    Component.onCompleted: {
-        cloudSpawnTimer.start()
-    }
-
     Timer {
         id: cloudSpawnTimer
         interval: 4000
@@ -17,6 +13,13 @@ EntityBase {
         onTriggered: spawnCloud()
     }
 
+    function start() {
+        cloudSpawnTimer.start()
+    }
+
+    function stop() {
+        cloudSpawnTimer.stop()
+    }
 
     function spawnCloud() {
         var yOffset = utils.generateRandomValueBetween(1,cloudManager.height / 2.3)

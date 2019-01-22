@@ -8,6 +8,13 @@ SceneBase {
 
     signal startGame()
 
+    CloudManager {
+        id: cloudManager
+        width: menuScene.gameWindowAnchorItem.width
+        height: 80
+        anchors.top: menuScene.gameWindowAnchorItem.top
+    }
+
     // the "logo"
     Image {
         scale: 0.6
@@ -18,18 +25,38 @@ SceneBase {
     }
 
     GroundManager {
-        id: ground
+        id: groundManager
         anchors.horizontalCenter: menuScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: menuScene.gameWindowAnchorItem.bottom
         width: menuScene.gameWindowAnchorItem.width
-        height: 20
+        height: 25.6
     }
 
     Player {
         id: player
         resetX: menuScene.gameWindowAnchorItem.width/2 - player.width/2*player.scale
-        resetY: menuScene.gameWindowAnchorItem.height - ground.height - player.height * player.scale + player.height / 15 * player.scale
+        resetY: menuScene.gameWindowAnchorItem.height - groundManager.height - player.height * player.scale + player.height / 20 * player.scale
     }
+
+
+    BorderElement {
+        entityId: "border-left"
+        id: leftBorder
+        anchors.bottom: menuScene.bottom
+        anchors.right: menuScene.gameWindowAnchorItem.left
+        width: 20
+        height: menuScene.height
+    }
+
+    BorderElement {
+        entityId: "border-right"
+        id: rightBorder
+        anchors.bottom: menuScene.bottom
+        anchors.left: menuScene.gameWindowAnchorItem.right
+        width: 20
+        height: menuScene.height
+    }
+
 
     // menu
     Menu {
@@ -39,5 +66,16 @@ SceneBase {
         onPlayPressed: {
             startGame()
         }
+    }
+
+
+    function startScene() {
+        cloudManager.start()
+        groundManager.start()
+    }
+
+    function stopScene() {
+        cloudManager.stop()
+        groundManager.stop()
     }
 }
