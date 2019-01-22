@@ -51,13 +51,15 @@ macx {
 }
 
 DISTFILES += \
-    qml/common/Ground.qml \
     qml/scenes/Menu.qml \
     qml/Player.qml \
     qml/scenes/GameScene.qml \
-    qml/common/Random.qml \
     qml/entities/FireBall.qml \
     qml/entities/Dragon.qml \
     qml/common/GroundElement.qml \
-    qml/common/BorderElement.qml
+    qml/common/BorderElement.qml \
+    qml/common/Cloud.qml \
+    qml/common/CloudManager.qml \
+    qml/common/RandomGenerator.qml \
+    qml/common/GroundManager.qml
 

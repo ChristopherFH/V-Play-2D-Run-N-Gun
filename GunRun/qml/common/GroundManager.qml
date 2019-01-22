@@ -1,9 +1,19 @@
 import VPlay 2.0
 import QtQuick 2.0
 
-Item {
+EntityBase {
     property int speed: 150
     id: ground
+
+    property EntityBase borderLeft
+    property EntityBase borderRight
+
+    Component.onCompleted: {
+        borderLeft = EntityManager.getEntityById("border-left")
+        borderRight = EntityManager.getEntityById("border-right")
+
+        createInitialGround()
+    }
 
     Rectangle {
         id: rect
@@ -11,8 +21,8 @@ Item {
         color: "green"
     }
 
-    Component.onCompleted: {
-        console.log("Ground Top: " + ground.top)
+    function createInitialGround() {
+
     }
 
 //    MovementAnimation {

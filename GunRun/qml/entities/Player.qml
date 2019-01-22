@@ -122,9 +122,9 @@ EntityBase {
         bodyType: Body.Dynamic
 
 //        Rectangle {
-//            width: player.width
-//            height: player.height
-//            anchors.centerIn: player
+//            width: parent
+//            height: parent
+//            anchors.centerIn: parent
 //            color: "#80ff0000"
 //        }
     }

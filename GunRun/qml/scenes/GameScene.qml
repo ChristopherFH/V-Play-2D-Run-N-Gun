@@ -15,7 +15,7 @@ SceneBase {
         anchors.fill: parent
     }
 
-    Ground {
+    GroundManager {
         id: ground
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
@@ -60,6 +60,38 @@ SceneBase {
                 player.shoot()
             }
         }
+    }
+
+    BorderElement {
+        entityId: "border-left"
+        id: leftBorder
+        anchors.bottom: gameScene.bottom
+        anchors.right: gameScene.gameWindowAnchorItem.left
+        width: 20
+        height: gameScene.height
+    }
+
+    BorderElement {
+        entityId: "border-right"
+        id: rightBorder
+        anchors.bottom: gameScene.bottom
+        anchors.left: gameScene.gameWindowAnchorItem.right
+        width: 20
+        height: gameScene.height
+    }
+
+    CloudManager {
+        id: cloudManager
+        width: gameScene.gameWindowAnchorItem.width
+        height: 80
+        anchors.top: gameScene.gameWindowAnchorItem.top
+
+//        Rectangle {
+//            width: cloudManager.width
+//            height: cloudManager.height
+//            anchors.centerIn: cloudManager
+//            color: "#80ff0000"
+//        }
     }
 
     //    Numbers {

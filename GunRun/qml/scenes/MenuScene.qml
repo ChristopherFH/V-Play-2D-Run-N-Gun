@@ -17,7 +17,7 @@ SceneBase {
         source: "../../assets/img/KnightRun.png"
     }
 
-    Ground {
+    GroundManager {
         id: ground
         anchors.horizontalCenter: menuScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: menuScene.gameWindowAnchorItem.bottom

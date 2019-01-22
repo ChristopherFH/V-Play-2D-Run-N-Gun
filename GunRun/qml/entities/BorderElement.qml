@@ -5,12 +5,10 @@ EntityBase {
     id: border
     entityType: "border"
 
-
-
     BoxCollider {
         collisionTestingOnlyMode: true
         categories: Box.Category5
-        collidesWith: Box.Category2
+        collidesWith: Box.Category2 | Box.Category6
         anchors.fill: border
 
         Rectangle {

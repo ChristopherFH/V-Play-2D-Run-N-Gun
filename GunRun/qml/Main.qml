@@ -65,7 +65,6 @@ GameWindow {
     // menu scene
     GameScene {
         id: gameScene
-        enabled: true
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
         onBackButtonPressed: {
