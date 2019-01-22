@@ -4,6 +4,7 @@ import QtQuick 2.0
 EntityBase {
     id: dragon
     entityType: "enemy"
+    poolingEnabled: true
 
     scale: 0.4
     width: 128

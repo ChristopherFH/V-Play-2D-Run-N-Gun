@@ -16,11 +16,11 @@ SceneBase {
     }
 
     GroundManager {
-        id: ground
+        id: groundManager
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         width: gameScene.gameWindowAnchorItem.width
-        height: 20
+        height: 25.6
     }
 
     Text {
@@ -35,7 +35,7 @@ SceneBase {
     Player {
         id: player
         resetX: gameScene.gameWindowAnchorItem.width/2 - player.width/2 * player.scale
-        resetY: gameScene.gameWindowAnchorItem.height - ground.height - player.height * player.scale + player.height/15 * player.scale
+        resetY: gameScene.gameWindowAnchorItem.height - groundManager.height - player.height * player.scale + player.height/20 * player.scale
 
         onGameOver: {
             if(gameScene.state === "gameOver")
@@ -85,13 +85,6 @@ SceneBase {
         width: gameScene.gameWindowAnchorItem.width
         height: 80
         anchors.top: gameScene.gameWindowAnchorItem.top
-
-//        Rectangle {
-//            width: cloudManager.width
-//            height: cloudManager.height
-//            anchors.centerIn: cloudManager
-//            color: "#80ff0000"
-//        }
     }
 
     //    Numbers {
@@ -121,11 +114,13 @@ SceneBase {
     function spawnEnemy() {
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Dragon.qml"),
                                                         {"resetX": gameScene.gameWindowAnchorItem.width - 10,
-                                                        "resetY": gameScene.gameWindowAnchorItem.height - ground.height})
+                                                        "resetY": gameScene.gameWindowAnchorItem.height - groundManager.height})
     }
 
-    function startGame() {
+    function startScene() {
         console.log("Start game called")
+        cloudManager.start()
+        groundManager.start()
         player.reset()
         level.reset()
         score = 0

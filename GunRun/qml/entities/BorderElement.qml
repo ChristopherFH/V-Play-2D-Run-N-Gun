@@ -8,7 +8,7 @@ EntityBase {
     BoxCollider {
         collisionTestingOnlyMode: true
         categories: Box.Category5
-        collidesWith: Box.Category2 | Box.Category6
+        collidesWith: Box.Category2 | Box.Category6 | Box.Category7
         anchors.fill: border
 
         Rectangle {
