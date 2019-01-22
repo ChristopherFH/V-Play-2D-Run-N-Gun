@@ -9,6 +9,9 @@ SceneBase {
 
     property int score: 0
     property int gameStartCount: 3
+    property int heartPoints: 3
+
+    state : "wait"
 
     Level {
         id: level
@@ -21,6 +24,36 @@ SceneBase {
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         width: gameScene.gameWindowAnchorItem.width
         height: 20
+    }
+
+    Row{
+        id: heartPoints_row
+        anchors.topMargin: 10
+        anchors.leftMargin: 10
+        anchors.top: gameScene.gameWindowAnchorItem.top
+        anchors.left: gameScene.gameWindowAnchorItem.left
+
+        Image {
+            height: player.height / 4
+            width: player.width / 4
+            id: heart_one
+            source: "../../assets/img/hud/hudHeart_full.png"
+        }
+
+        Image {
+            height: player.height / 4
+            width: player.width / 4
+            id: heart_two
+            source: "../../assets/img/hud/hudHeart_full.png"
+        }
+
+        Image {
+            height: player.height / 4
+            width: player.width / 4
+            id: heart_three
+            source: "../../assets/img/hud/hudHeart_full.png"
+        }
+
     }
 
     Text {
@@ -58,6 +91,7 @@ SceneBase {
         onPressed: {
             if(gameScene.state == "running") {
                 player.shoot()
+                updateHeartPoints()
             }
         }
     }
@@ -86,6 +120,7 @@ SceneBase {
         height: 80
         anchors.top: gameScene.gameWindowAnchorItem.top
 
+
 //        Rectangle {
 //            width: cloudManager.width
 //            height: cloudManager.height
@@ -94,11 +129,16 @@ SceneBase {
 //        }
     }
 
-    //    Numbers {
-    //        anchors.horizontalCenter: parent.horizontalCenter
-    //        y: 30
-    //        number: score
-    //    }
+    DialogBase {
+        id: gameOverPanel
+        anchors.centerIn: parent
+        onPlayAgainPressed: {
+            startGame()
+        }
+        onExitPressed: {
+           window.state = "menu"
+        }
+    }
 
     function updateCount(){
         if(gameStartCount > 1) {
@@ -118,6 +158,24 @@ SceneBase {
         to: 10;
         duration: 3000 }
 
+    function updateHeartPoints(){
+            heartPoints--
+            switch(heartPoints) {
+              case 0:
+                    heart_one.source = "../../assets/img/hud/hudHeart_empty.png"
+                break;
+              case 1:
+                  heart_two.source = "../../assets/img/hud/hudHeart_empty.png"
+                break;
+              case 2:
+                heart_three.source = "../../assets/img/hud/hudHeart_empty.png"
+                break;
+            }
+            if(heartPoints === 0){
+                stopGame()
+            }
+    }
+
     function spawnEnemy() {
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Dragon.qml"),
                                                         {"resetX": gameScene.gameWindowAnchorItem.width - 10,
@@ -126,16 +184,34 @@ SceneBase {
 
     function startGame() {
         console.log("Start game called")
+        state = "wait"
         player.reset()
         level.reset()
+        heart_one.source = "../../assets/img/hud/hudHeart_full.png"
+        heart_two.source = "../../assets/img/hud/hudHeart_full.png"
+        heart_three.source = "../../assets/img/hud/hudHeart_full.png"
+        heartPoints = 3
         score = 0
+        gameStartCount = 3
         playerToStartAnimation.start()
         updateGamestartTimer.start()
     }
 
     function stopGame() {
+        // show dialog
         level.stop()
         gameScene.state = "gameOver"
     }
+
+    states: [
+        State {
+            name: "gameOver"
+            PropertyChanges {target: gameOverPanel; opacity: 1}
+        },
+        State {
+            name: "wait"
+            PropertyChanges {target: gameOverPanel; opacity: 0}
+            }
+    ]
 
 }

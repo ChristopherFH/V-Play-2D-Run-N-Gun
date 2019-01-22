@@ -121,12 +121,19 @@ EntityBase {
         anchors.centerIn: player
         bodyType: Body.Dynamic
 
+        fixture.onBeginContact: {
+            updateHp()
+        }
 //        Rectangle {
 //            width: parent
 //            height: parent
 //            anchors.centerIn: parent
 //            color: "#80ff0000"
 //        }
+    }
+
+    function updateHp(){
+        gameScene.updateHeartPoints()
     }
 
     function reset() {

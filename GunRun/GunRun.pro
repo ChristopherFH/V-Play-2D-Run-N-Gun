@@ -61,5 +61,7 @@ DISTFILES += \
     qml/common/Cloud.qml \
     qml/common/CloudManager.qml \
     qml/common/RandomGenerator.qml \
-    qml/common/GroundManager.qml
+    qml/common/GroundManager.qml \
+    qml/common/DialogBase.qml \
+    qml/scenes/GameOverButton.qml
 
