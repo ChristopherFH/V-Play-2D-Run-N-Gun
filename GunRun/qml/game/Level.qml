@@ -15,6 +15,5 @@ Item {
     }
 
     function start() {
-
     }
 }

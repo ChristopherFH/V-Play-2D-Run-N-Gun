@@ -5,10 +5,28 @@ EntityBase {
     id: dragon
     entityType: "enemy"
 
-    width: collider.radius * 2
-    height: collider.radius * 2
-    property int frameRate: 10
+    scale: 0.4
+    width: 128
+    height: 148
+    property int resetX: 0
+    property int resetY: 0
+    property int realFrameRate: 10
+    property int dieFrameCount: 10
+    property bool isDying: false
 
+    Component.onCompleted: {
+        reset()
+    }
+
+    Timer {
+        id: dieTimer
+        interval: (dieFrameCount-1) / realFrameRate * 1000
+        running: false
+        repeat: false
+        onTriggered: {
+            removeEntity()
+        }
+    }
 
     TexturePackerSpriteSequenceVPlay {
         id: dragonSprite
@@ -19,7 +37,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "idle"
             source: "../../assets/img/dragon.json"
-            frameRate: frameRate
+            frameRate: realFrameRate
             to: {"idle": 1}
             frameNames: [
                 "idle_01.png",
@@ -34,7 +52,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "die"
             source: "../../assets/img/dragon.json"
-            frameRate: frameRate
+            frameRate: realFrameRate
             to: {"idle": 1}
             frameNames: [
                 "die_001.png",
@@ -53,7 +71,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "cast"
             source: "../../assets/img/dragon.json"
-            frameRate: frameRate
+            frameRate: realFrameRate
             to: {"idle": 1}
             frameNames: [
                 "attack_01.png",
@@ -65,7 +83,7 @@ EntityBase {
         TexturePackerSpriteVPlay {
             name: "win"
             source: "../../assets/img/dragon.json"
-            frameRate: frameRate
+            frameRate: realFrameRate
             to: {"win": 1}
             frameNames: [
                 "win_01.png",
@@ -75,23 +93,32 @@ EntityBase {
     }
 
     BoxCollider {
+        collisionTestingOnlyMode: true
+        categories: Box.Category3
+        collidesWith: Box.Category5 | Box.Category2
         id: collider
         width: dragon.width
         height: dragon.height
         anchors.centerIn: parent
         bodyType: Body.Dynamic
+
+        fixture.onBeginContact: {
+            die()
+        }
     }
 
     function reset() {
-        dragon.x = resetX
-        dragon.y = resetY
+        dragon.x = resetX - dragon.width * dragon.scale
+        dragon.y = resetY - dragon.height * dragon.scale + dragon.height/15 * dragon.scale
         collider.body.linearVelocity = Qt.point(0,0)
-        spriteSequence.running = true
+        dragonSprite.running = true
     }
 
     function die() {
         //stop moving here
+        isDying = true
         dragonSprite.jumpTo("die")
+        dieTimer.start()
     }
 
     function shoot() {

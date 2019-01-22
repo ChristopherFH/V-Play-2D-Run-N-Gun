@@ -9,18 +9,34 @@ EntityBase {
     property int resetX: 0
     property int resetY: 0
 
-    width: collider.radius * 2
-    height: collider.radius * 2
-    property int realFrameRate: 6
+    width: 128
+    height: 148
 
-    signal gameOver() 
+    property int shootAtFrame : 2
+    property int realFrameRate: 10
 
-    Component.onCompleted: reset()
-    scale: 0.5
+    signal gameOver()
+
+    Component.onCompleted: {
+        reset()
+    }
+    scale: 0.4
 
     onGameOver: {
         knightSprite.running = false
     }
+
+    Timer {
+        id: shootingTimer
+        interval: shootAtFrame / realFrameRate * 1000
+        running: false
+        repeat: false
+        onTriggered: {
+            entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/FireBall.qml"),
+                                                            {"x": (player.x + player.width / 2 * player.scale), "y": player.y + player.height/2*player.scale, "speed": 350});
+        }
+    }
+
 
     TexturePackerSpriteSequenceVPlay {
         id: knightSprite
@@ -95,12 +111,22 @@ EntityBase {
         }
     }
 
+
     BoxCollider {
+        categories: Box.Category1
+        collidesWith: Box.Category5
         id: collider
         width: player.width
         height: player.height
-        anchors.centerIn: parent
+        anchors.centerIn: player
         bodyType: Body.Dynamic
+
+//        Rectangle {
+//            width: player.width
+//            height: player.height
+//            anchors.centerIn: player
+//            color: "#80ff0000"
+//        }
     }
 
     function reset() {
@@ -118,6 +144,7 @@ EntityBase {
     function shoot() {
         //add projectile spawning here
         knightSprite.jumpTo("cast")
+        shootingTimer.start()
     }
 
     function jump() {

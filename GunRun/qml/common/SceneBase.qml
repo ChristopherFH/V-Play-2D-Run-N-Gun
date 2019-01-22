@@ -34,7 +34,7 @@ Scene {
         id: leftBorder
         anchors.bottom: sceneBase.bottom
         anchors.right: sceneBase.gameWindowAnchorItem.left
-        anchors.rightMargin: -100
+//        anchors.rightMargin: -100
         width: 20
         height: sceneBase.height
     }
@@ -43,7 +43,7 @@ Scene {
         id: rightBorder
         anchors.bottom: sceneBase.bottom
         anchors.left: sceneBase.gameWindowAnchorItem.right
-        anchors.leftMargin: -100
+//        anchors.leftMargin: -100
         width: 20
         height: sceneBase.height
     }

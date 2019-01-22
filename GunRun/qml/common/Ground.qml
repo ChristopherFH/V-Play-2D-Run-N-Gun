@@ -12,6 +12,7 @@ Item {
     }
 
     Component.onCompleted: {
+        console.log("Ground Top: " + ground.top)
     }
 
 //    MovementAnimation {

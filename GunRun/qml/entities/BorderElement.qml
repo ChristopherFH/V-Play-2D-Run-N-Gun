@@ -5,14 +5,19 @@ EntityBase {
     id: border
     entityType: "border"
 
-    Rectangle {
-        id: rect
-        anchors.fill: border
-        color: "red"
-    }
+
 
     BoxCollider {
+        collisionTestingOnlyMode: true
+        categories: Box.Category5
+        collidesWith: Box.Category2
         anchors.fill: border
+
+        Rectangle {
+            id: rect
+            anchors.fill: parent
+            color: "#8000ff00"
+        }
     }
 
 }

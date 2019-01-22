@@ -15,9 +15,16 @@ GameWindow {
     //  * Add plugins to monetize, analyze & improve your apps (available with the Pro Licenses)
     //licenseKey: "<generate one from https://v-play.net/licenseKey>"
 
+    PhysicsWorld {
+        id: physicsWorld
+        gravity.y: 0
+    }
+
+
     // create and remove entities at runtime
     EntityManager {
         id: entityManager
+        entityContainer: activeScene
     }
 
     FontLoader {
@@ -37,6 +44,7 @@ GameWindow {
         // listen to the button signals of the scene and change the state according to it
         onStartGame: {
             window.state = "game"
+            gameScene.startGame()
         }
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
@@ -57,6 +65,7 @@ GameWindow {
     // menu scene
     GameScene {
         id: gameScene
+        enabled: true
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
         onBackButtonPressed: {

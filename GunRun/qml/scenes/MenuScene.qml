@@ -27,18 +27,15 @@ SceneBase {
 
     Player {
         id: player
-        anchors.bottom: ground.top
-        anchors.bottomMargin: -ground.height / 1.5
-        resetX: menuScene.gameWindowAnchorItem.width/2
-        resetY: menuScene.gameWindowAnchorItem.height/2
+        resetX: menuScene.gameWindowAnchorItem.width/2 - player.width/2*player.scale
+        resetY: menuScene.gameWindowAnchorItem.height - ground.height - player.height * player.scale + player.height / 15 * player.scale
     }
-
 
     // menu
     Menu {
         anchors.centerIn: parent
 
-//        onScorePressed: scoreAction()
+        //        onScorePressed: scoreAction()
         onPlayPressed: {
             startGame()
         }

@@ -7,11 +7,6 @@ import "../game"
 SceneBase {
     id: gameScene
 
-    onActiveFocusChanged: {
-        updatePositioningTimer.start()
-        updateGamestartTimer.start()
-    }
-
     property int score: 0
     property int gameStartCount: 3
 
@@ -39,10 +34,8 @@ SceneBase {
 
     Player {
         id: player
-        anchors.bottom: ground.top
-        anchors.bottomMargin: -ground.height / 1.5
-        resetX: gameScene.gameWindowAnchorItem.width/2
-        resetY: gameScene.gameWindowAnchorItem.height/2
+        resetX: gameScene.gameWindowAnchorItem.width/2 - player.width/2 * player.scale
+        resetY: gameScene.gameWindowAnchorItem.height - ground.height - player.height * player.scale + player.height/15 * player.scale
 
         onGameOver: {
             if(gameScene.state === "gameOver")
@@ -52,19 +45,11 @@ SceneBase {
     }
 
     Timer {
-         id: updatePositioningTimer
-         interval: 200
-         running: false
-         repeat: true
-         onTriggered: gameScene.updatePosition()
-    }
-
-    Timer {
-         id: updateGamestartTimer
-         interval: 1000
-         running: false
-         repeat: true
-         onTriggered: gameScene.updateCount()
+        id: updateGamestartTimer
+        interval: 1000
+        running: false
+        repeat: true
+        onTriggered: gameScene.updateCount()
     }
 
     MouseArea {
@@ -72,41 +57,47 @@ SceneBase {
         anchors.fill: gameScene.gameWindowAnchorItem
         onPressed: {
             if(gameScene.state == "running") {
-
+                player.shoot()
             }
         }
     }
 
-//    Numbers {
-//        anchors.horizontalCenter: parent.horizontalCenter
-//        y: 30
-//        number: score
-//    }
+    //    Numbers {
+    //        anchors.horizontalCenter: parent.horizontalCenter
+    //        y: 30
+    //        number: score
+    //    }
 
     function updateCount(){
-        if(gameStartCount >= 0){
-            count.text = (gameStartCount--).toString()
-        }else{
+        if(gameStartCount > 1) {
+            count.text = (--gameStartCount).toString()
+        } else {
             updateGamestartTimer.stop()
             level.start()
+            spawnEnemy()
             gameScene.state = "running"
             count.text = ""
         }
     }
 
-    function updatePosition() {
-        if(player.x >= gameScene.gameWindowAnchorItem.width / 5){
-            player.x  -= 8
-        }else{
-            updatePositioningTimer.stop()
-        }
+    PropertyAnimation { id: playerToStartAnimation;
+        target: player;
+        property: "x";
+        to: 10;
+        duration: 3000 }
+
+    function spawnEnemy() {
+        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Dragon.qml"),
+                                                        {"resetX": gameScene.gameWindowAnchorItem.width - 10,
+                                                        "resetY": gameScene.gameWindowAnchorItem.height - ground.height})
     }
 
     function startGame() {
+        console.log("Start game called")
         player.reset()
         level.reset()
         score = 0
-        updatePositioningTimer.start()
+        playerToStartAnimation.start()
         updateGamestartTimer.start()
     }
 
