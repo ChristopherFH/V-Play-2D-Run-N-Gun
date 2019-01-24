@@ -20,7 +20,7 @@ EntityBase {
     Component.onCompleted: {
         reset()
     }
-    scale: 0.4
+    scale: 0.3
 
     onGameOver: {
         knightSprite.running = false

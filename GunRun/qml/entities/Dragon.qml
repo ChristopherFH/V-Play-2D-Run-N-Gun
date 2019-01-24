@@ -6,7 +6,7 @@ EntityBase {
     entityType: "enemy"
     poolingEnabled: true
 
-    scale: 0.4
+    scale: 0.3
     width: 128
     height: 148
     property int resetX: 0

@@ -6,7 +6,7 @@ EntityBase {
     entityType: "projectile"
     poolingEnabled: true
 
-    scale: 0.3
+    scale: 0.25
     width: fireballSprite.width
     height: fireballSprite.height
     property int speed: 350
@@ -14,10 +14,6 @@ EntityBase {
 
     Component.onCompleted: {
         animation.start()
-    }
-
-    Component.onDestruction: {
-//        console.log("Fireball destroyed!")
     }
 
     TexturePackerSpriteSequenceVPlay {
@@ -47,12 +43,7 @@ EntityBase {
         height: fireball.height
         bodyType: Body.Dynamic
 
-        fixture.onBeginContact: {
-//            console.log("collision started: " + other.getBody().target.entityType)
-        }
-
         fixture.onEndContact: {
-//            console.log("collision ended: " + other.getBody().target.entityType)
             if(other.getBody().target.entityType === "border")
                 removeEntity()
         }

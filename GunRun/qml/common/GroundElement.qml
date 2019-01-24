@@ -6,8 +6,8 @@ EntityBase {
     entityType: "groundElement"
     poolingEnabled: true
 
-    width: image.width
-    height: image.height
+    width: 25
+    height: 25
 
     property double resetX: 0
     property double resetY: 0
@@ -15,19 +15,10 @@ EntityBase {
     property bool spawnable: false
     property int groundWidth: 0
 
-    //scale: 0.40625 // 26px
     signal spawnNext()
 
     Component.onCompleted: {
         reset()
-    }
-
-    Image {
-        width: 25
-        height: 25
-        id: image
-        anchors.bottom: parent.bottom
-        source: "../../assets/img/tiles/tileBlue_05.png"
     }
 
     BoxCollider {
@@ -36,17 +27,6 @@ EntityBase {
         collidesWith: Box.Category5
         width: groundElement.width
         height: groundElement.height
-
-//        fixture.onEndContact: {
-//            var otherItem = other.getBody().target
-//            //            console.log("End Contact: " + otherItem.entityId)
-
-//            if(otherItem.entityType === "border") {
-//                if(otherItem.entityId === "border-left") {
-//                    removeEntity()
-//                }
-//            }
-//        }
     }
 
     function start() {
@@ -57,7 +37,10 @@ EntityBase {
         animation.stop()
     }
 
+    function resetHook(){}
+
     function reset() {
+        resetHook()
         groundElement.x = resetX
         groundElement.y = resetY
 
@@ -74,10 +57,13 @@ EntityBase {
     }
 
     function initiateSpawn() {
-        console.log("initiate spawn")
         spawnNext()
         spawnable = false
         animation.minPropertyValue = -groundElement.width
+    }
+
+    function getVerticalOffset() {
+        return 0
     }
 
     MovementAnimation {

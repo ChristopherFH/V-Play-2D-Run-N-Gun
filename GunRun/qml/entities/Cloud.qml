@@ -30,15 +30,8 @@ EntityBase {
         width: cloud.width
         height: cloud.height
         bodyType: Body.Dynamic
-
-        fixture.onBeginContact: {
-            //            console.log("collision started: " + other.getBody().target.entityType)
-        }
-
         fixture.onEndContact: {
             var collidedEntity = other.getBody().target;
-
-            //            console.log("collision ended: " + collidedEntity.entityType)
             if(collidedEntity.entityType === "border" && collidedEntity.entityId === "left")
                 removeEntity()
         }

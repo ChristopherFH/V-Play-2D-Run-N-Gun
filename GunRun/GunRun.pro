@@ -65,5 +65,7 @@ DISTFILES += \
     qml/common/DialogBase.qml \
     qml/scenes/GameOverButton.qml \
     qml/common/UpGroundElement.qml \
-    qml/entities/GroundElementDown.qml
+    qml/entities/GroundElementDown.qml \
+    qml/common/GroundElementFlat.qml \
+    qml/common/SimpleGroundManager.qml
 

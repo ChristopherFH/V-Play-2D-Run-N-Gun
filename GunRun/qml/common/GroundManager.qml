@@ -12,16 +12,27 @@ EntityBase {
     property int groundElementId: 1
     property int speed: 100
     height: 25
+    property int currentVerticalOffset: 0
+
+    property int newTileEvery: 3
+    property int nextTileIn: 0
+    property string lastTileType
+
+    RandomGenerator {
+        id: randomGenerator
+        seed: 1
+    }
 
     function start() {
+        randomGenerator.setSeed(1)
+        currentVerticalOffset = 0
         var groundElements = entityManager.getEntityArrayByType("groundElement")
         groundElements.forEach(function(entity) {entity.removeEntity()})
 
         borderLeft = entityManager.getEntityById("border-left")
         borderRight = entityManager.getEntityById("border-right")
 
-        spawnAt(0)
-
+        spawnAt(0,"Flat")
         while(lastElement.getX() <= groundManager.width) {
             spawnInitialNext()
         }
@@ -33,36 +44,35 @@ EntityBase {
     }
 
     function spawnInitialNext() {
-        //        console.log("Spawn next")
-        spawnAt(lastElement.getX())
+        spawnAt(lastElement.getX(),"Flat")
     }
 
     function spawnNext(){
-        spawnAt(groundManager.width)
+        spawnAt(groundManager.width-1,getNextTile())
     }
 
-    function spawnAt(atX) {
-        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement.qml"),
+    function spawnAt(atX,element) {
+        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement"+element+".qml"),
                                                         {"resetX": atX,
-                                                            "resetY": groundManager.y,
+                                                            "resetY": groundManager.y + currentVerticalOffset,
                                                             "speed": speed,
                                                             "spawnable": ((atX + groundManager.height) >= groundManager.width),
                                                             "groundWidth": groundManager.width,
                                                             "entityId": groundElementId++})
         lastElement = entityManager.getLastAddedEntity()
+        currentVerticalOffset += lastElement.getVerticalOffset()
         lastElement.spawnNext.connect(spawnNext)
     }
 
-
-    //    MovementAnimation {
-    //        id: animation
-    //        target: parent
-    //        property: "x"
-    //        velocity: -speed
-    //        running: false
-    //        minPropertyValue: scene.gameWindowAnchorItem.x-pipeElement.width*1.5
-    //        onLimitReached: {
-    //            reset()
-    //        }
-    //    }
+    function getNextTile() {
+        if(nextTileIn === 0) {
+            nextTileIn = newTileEvery - 1
+            var random = randomGenerator.random()
+            var tempTile = lastTileType
+            lastTileType = lastElement.getNextTile(random)
+        } else {
+            nextTileIn--
+        }
+        return lastTileType
+    }
 }
