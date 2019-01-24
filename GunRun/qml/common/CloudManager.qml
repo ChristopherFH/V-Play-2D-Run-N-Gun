@@ -5,6 +5,8 @@ EntityBase {
     id: cloudManager
     entityType: "cloudManager"
 
+    property int cloudElementId: 1
+
     Timer {
         id: cloudSpawnTimer
         interval: 4000
@@ -15,10 +17,15 @@ EntityBase {
 
     function start() {
         cloudSpawnTimer.start()
+        var cloudElements = entityManager.getEntityArrayByType("cloudElement")
+        cloudElements.forEach(function(entity) {entity.start()})
     }
 
     function stop() {
         cloudSpawnTimer.stop()
+
+        var cloudElements = entityManager.getEntityArrayByType("cloudElement")
+        cloudElements.forEach(function(entity) {entity.stop()})
     }
 
     function spawnCloud() {
@@ -27,7 +34,8 @@ EntityBase {
                                                         {"x": cloudManager.width,
                                                             "y": yOffset,
                                                             "speed": 20 + yOffset/2,
-                                                            "cloudNumber": utils.generateRandomValueBetween(1,9)});
+                                                            "cloudNumber": utils.generateRandomValueBetween(1,9),
+                                                            "entityId":cloudElementId++});
     }
 
 }

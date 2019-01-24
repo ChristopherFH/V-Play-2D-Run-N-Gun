@@ -3,7 +3,7 @@ import QtQuick 2.0
 
 EntityBase {
     id: cloud
-    entityType: "decorative"
+    entityType: "cloudElement"
     poolingEnabled: true
 
     scale: 0.4
@@ -32,18 +32,25 @@ EntityBase {
         bodyType: Body.Dynamic
 
         fixture.onBeginContact: {
-//            console.log("collision started: " + other.getBody().target.entityType)
+            //            console.log("collision started: " + other.getBody().target.entityType)
         }
 
         fixture.onEndContact: {
             var collidedEntity = other.getBody().target;
 
-//            console.log("collision ended: " + collidedEntity.entityType)
+            //            console.log("collision ended: " + collidedEntity.entityType)
             if(collidedEntity.entityType === "border" && collidedEntity.entityId === "left")
                 removeEntity()
         }
     }
 
+    function start() {
+        cloudAnimation.start()
+    }
+
+    function stop() {
+        cloudAnimation.stop()
+    }
 
     MovementAnimation {
         id: cloudAnimation

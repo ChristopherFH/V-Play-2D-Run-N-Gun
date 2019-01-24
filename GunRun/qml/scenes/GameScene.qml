@@ -11,6 +11,8 @@ SceneBase {
     property int gameStartCount: 3
     property int heartPoints: 3
 
+    signal returnToMenu()
+
     state : "wait"
 
     Level {
@@ -23,7 +25,6 @@ SceneBase {
         anchors.horizontalCenter: gameScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: gameScene.gameWindowAnchorItem.bottom
         width: gameScene.gameWindowAnchorItem.width
-        height: 25.6
     }
 
     Row{
@@ -120,12 +121,12 @@ SceneBase {
         height: 80
         anchors.top: gameScene.gameWindowAnchorItem.top
 
-//        Rectangle {
-//            width: cloudManager.width
-//            height: cloudManager.height
-//            anchors.centerIn: cloudManager
-//            color: "#80ff0000"
-//        }
+        //        Rectangle {
+        //            width: cloudManager.width
+        //            height: cloudManager.height
+        //            anchors.centerIn: cloudManager
+        //            color: "#80ff0000"
+        //        }
 
 
     }
@@ -134,10 +135,10 @@ SceneBase {
         id: gameOverPanel
         anchors.centerIn: parent
         onPlayAgainPressed: {
-            startGame()
+            startScene()
         }
         onExitPressed: {
-           window.state = "menu"
+            returnToMenu()
         }
     }
 
@@ -160,31 +161,30 @@ SceneBase {
         duration: 3000 }
 
     function updateHeartPoints(){
-            heartPoints--
-            switch(heartPoints) {
-              case 0:
-                    heart_one.source = "../../assets/img/hud/hudHeart_empty.png"
-                break;
-              case 1:
-                  heart_two.source = "../../assets/img/hud/hudHeart_empty.png"
-                break;
-              case 2:
-                heart_three.source = "../../assets/img/hud/hudHeart_empty.png"
-                break;
-            }
-            if(heartPoints === 0){
-                stopGame()
-            }
+        heartPoints--
+        switch(heartPoints) {
+        case 0:
+            heart_one.source = "../../assets/img/hud/hudHeart_empty.png"
+            break;
+        case 1:
+            heart_two.source = "../../assets/img/hud/hudHeart_empty.png"
+            break;
+        case 2:
+            heart_three.source = "../../assets/img/hud/hudHeart_empty.png"
+            break;
+        }
+        if(heartPoints === 0){
+            stopGame()
+        }
     }
 
     function spawnEnemy() {
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Dragon.qml"),
                                                         {"resetX": gameScene.gameWindowAnchorItem.width - 10,
-                                                        "resetY": gameScene.gameWindowAnchorItem.height - groundManager.height})
+                                                            "resetY": gameScene.gameWindowAnchorItem.height - groundManager.height})
     }
 
     function startScene() {
-        console.log("Start game called")
         state = "wait"
         cloudManager.start()
         groundManager.start()
@@ -202,8 +202,12 @@ SceneBase {
     }
 
     function stopGame() {
+        console.log("STOP GAME")
         // show dialog
         level.stop()
+        player.die()
+        groundManager.stop()
+        cloudManager.stop()
         gameScene.state = "gameOver"
     }
 
@@ -215,7 +219,7 @@ SceneBase {
         State {
             name: "wait"
             PropertyChanges {target: gameOverPanel; opacity: 0}
-            }
+        }
     ]
 
 }

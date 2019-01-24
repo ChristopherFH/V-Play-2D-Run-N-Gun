@@ -45,7 +45,7 @@ Item {
                 color: "white"
                 anchors.verticalCenterOffset: -parent.height / 10
                 text: "play"
-               anchors.centerIn: parent
+                anchors.centerIn: parent
                 font.pixelSize: parent.height / 2.5
                 font.family: fontloader.name
             }
@@ -82,7 +82,7 @@ Item {
                 color: "white"
                 anchors.verticalCenterOffset: -parent.height / 10
                 text: "exit"
-               anchors.centerIn: parent
+                anchors.centerIn: parent
                 font.pixelSize: parent.height / 2.5
                 font.family: fontloader.name
             }

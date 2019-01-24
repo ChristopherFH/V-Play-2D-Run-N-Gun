@@ -29,7 +29,6 @@ SceneBase {
         anchors.horizontalCenter: menuScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: menuScene.gameWindowAnchorItem.bottom
         width: menuScene.gameWindowAnchorItem.width
-        height: 25.6
     }
 
     Player {
@@ -62,12 +61,11 @@ SceneBase {
     Menu {
         anchors.centerIn: parent
 
-        //        onScorePressed: scoreAction()
+//        onScorePressed: scoreAction()
         onPlayPressed: {
             startGame()
         }
     }
-
 
     function startScene() {
         cloudManager.start()

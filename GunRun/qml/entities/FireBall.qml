@@ -17,7 +17,7 @@ EntityBase {
     }
 
     Component.onDestruction: {
-        console.log("Fireball destroyed!")
+//        console.log("Fireball destroyed!")
     }
 
     TexturePackerSpriteSequenceVPlay {
@@ -48,11 +48,11 @@ EntityBase {
         bodyType: Body.Dynamic
 
         fixture.onBeginContact: {
-            console.log("collision started: " + other.getBody().target.entityType)
+//            console.log("collision started: " + other.getBody().target.entityType)
         }
 
         fixture.onEndContact: {
-            console.log("collision ended: " + other.getBody().target.entityType)
+//            console.log("collision ended: " + other.getBody().target.entityType)
             if(other.getBody().target.entityType === "border")
                 removeEntity()
         }

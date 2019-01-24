@@ -97,7 +97,7 @@ EntityBase {
             name: "die"
             source: "../../assets/img/knight.json"
             frameRate: realFrameRate
-            to: {"walk": 1}
+            to: {"dieend": 1}
             frameNames: [
                 "Knight_die_01.png",
                 "Knight_die_02.png",
@@ -107,6 +107,16 @@ EntityBase {
                 "Knight_die_06.png",
                 "Knight_die_07.png",
                 "Knight_die_08.png"
+            ]
+        }
+
+        TexturePackerSpriteVPlay {
+            name: "dieend"
+            source: "../../assets/img/knight.json"
+            frameRate: realFrameRate
+            to: {"dieend": 1}
+            frameNames: [
+
             ]
         }
     }
@@ -124,12 +134,6 @@ EntityBase {
         fixture.onBeginContact: {
             updateHp()
         }
-//        Rectangle {
-//            width: parent
-//            height: parent
-//            anchors.centerIn: parent
-//            color: "#80ff0000"
-//        }
     }
 
     function updateHp(){
@@ -141,6 +145,7 @@ EntityBase {
         player.y = resetY
         collider.body.linearVelocity = Qt.point(0,0)
         knightSprite.running = true
+        knightSprite.jumpTo("walk")
     }
 
     function die() {

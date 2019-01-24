@@ -63,5 +63,7 @@ DISTFILES += \
     qml/common/RandomGenerator.qml \
     qml/common/GroundManager.qml \
     qml/common/DialogBase.qml \
-    qml/scenes/GameOverButton.qml
+    qml/scenes/GameOverButton.qml \
+    qml/common/UpGroundElement.qml \
+    qml/entities/GroundElementDown.qml
 
