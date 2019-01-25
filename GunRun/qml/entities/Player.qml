@@ -21,13 +21,12 @@ EntityBase {
     property int healthPoints: 3
     property int fixedY: 0
     property bool isJumping: false
-
+    property bool isInvulnerable: false
 
     signal gameOver()
     Component.onCompleted: {
         reset()
     }
-
 
     onGameOver: {
         knightSprite.running = false
@@ -46,11 +45,11 @@ EntityBase {
     }
 
     function fixY() {
-//        if((!isJumping && player.y !== fixedY)) {
-//            var difference = fixedY-player.y
-//            player.y = player.y + Math.min(difference,3)
-//            gameScene.moveGround(Math.min(difference,3))
-//        }
+        if((!isJumping && player.y !== fixedY) || (isJumping && player.y > fixedY)) {
+            var difference = fixedY-player.y
+            player.y = fixedY
+            gameScene.moveGround(difference)
+        }
     }
 
     Timer {
@@ -73,7 +72,7 @@ EntityBase {
             toggleVisibility()
             invulnerabilityBlinksLeft--
             if(invulnerabilityBlinksLeft === 0) {
-                visible = true
+                isInvulnerable = false
                 invulnerabilityTimer.stop()
             }
         }
@@ -174,17 +173,17 @@ EntityBase {
     BoxCollider {
         fixedRotation: true
         categories: Box.Category12
-        collidesWith: Box.Category7 | Box.Category8 | Box.Category16
+        collidesWith: Box.Category7 | Box.Category16
         id: collider
         width: parent.width * parent.scale
-        height: (parent.height - 10) * parent.scale
+        height: (parent.height-10) * parent.scale
         anchors.top: parent.top
         bodyType: Body.Dynamic
 
         fixture.onBeginContact: {
             if(other.getBody().target.entityType === "projectile") {
                 updateHp()
-            } else if(knightSprite.currentSprite === "jumpend") {
+            }else if(knightSprite.currentSprite === "jumpend") {
                 isJumping = false
                 knightSprite.jumpTo("walk")
             }
@@ -192,7 +191,6 @@ EntityBase {
     }
 
     function toggleVisibility() {
-        visible = !visible
     }
 
     function updateHp(){
@@ -201,6 +199,7 @@ EntityBase {
 
         if(healthPoints > 0 && healthPoints < 3) {
             invulnerabilityBlinksLeft = invulnerabilityBlinks
+            isInvulnerable = true
             invulnerabilityTimer.start()
         }
     }
@@ -231,6 +230,9 @@ EntityBase {
     }
 
     function jump() {
+        if(isJumping)
+            return
+
         isJumping = true
         collider.body.applyForceToCenter(Qt.point(0, -10000));
         knightSprite.jumpTo("jump")

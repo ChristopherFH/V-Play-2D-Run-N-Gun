@@ -48,6 +48,10 @@ EntityBase {
         return groundElement.x + groundElement.width * groundElement.scale
     }
 
+    function getY() {
+        return groundElement.y + getVerticalOffset()
+    }
+
     function initiateSpawn() {
         spawnNext()
         spawnable = false

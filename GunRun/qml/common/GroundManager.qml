@@ -5,7 +5,7 @@ EntityBase {
     id: groundManager
     entityType: "groundManager"
 
-    property GroundElement lastElement
+    property GroundElement lastElement: null
 
     property int groundElementId: 1
     property int speed: 100
@@ -48,7 +48,7 @@ EntityBase {
     function spawnAt(atX,element) {
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement"+element+".qml"),
                                                         {"resetX": atX,
-                                                            "resetY": groundManager.y + currentVerticalOffset,
+                                                            "resetY": lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY(),
                                                             "speed": speed,
                                                             "spawnable": ((atX + groundManager.height) >= groundManager.width),
                                                             "groundWidth": groundManager.width,

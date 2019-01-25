@@ -70,6 +70,7 @@ SceneBase {
         anchors.left: gameScene.left
         anchors.leftMargin: 11 + player.width * player.scale
         anchors.top: gameScene.top
+        visible: false
     }
 
     Text {
@@ -106,7 +107,7 @@ SceneBase {
         anchors.fill: gameScene.gameWindowAnchorItem
         onPressed: {
             if(gameScene.state == "running") {
-                player.shoot()
+                player.jump()
             }
         }
     }
@@ -143,6 +144,7 @@ SceneBase {
             count.text = (--gameStartCount).toString()
         } else {
             borderLeft.x = player.x - borderLeft.width
+            borderRight.visible = true
             updateGamestartTimer.stop()
             level.start()
             spawnEnemy()
@@ -160,6 +162,10 @@ SceneBase {
     }
 
     function moveGround(difference) {
+        var groundElements = entityManager.getEntityArrayByType("groundElement")
+        groundElements.forEach(function(element) {
+            element.y += difference
+        })
         groundManager.y += difference
     }
 
@@ -189,6 +195,7 @@ SceneBase {
 
     function startScene() {
         state = "wait"
+        borderRight.visible = false
         cloudManager.start()
         groundManager.start()
 
