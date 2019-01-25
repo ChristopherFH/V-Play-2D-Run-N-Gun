@@ -11,19 +11,46 @@ EntityBase {
 
     width: 128
     height: 148
+    scale: 0.3
 
     property int shootAtFrame : 2
     property int realFrameRate: 10
+    property int invulnerabilityDuration: 2000 //ms
+    property int invulnerabilityBlinks: 7
+    property int invulnerabilityBlinksLeft: 0
+    property int healthPoints: 3
+    property int fixedY: 0
+    property bool isJumping: false
+
 
     signal gameOver()
-
     Component.onCompleted: {
         reset()
     }
-    scale: 0.3
+
 
     onGameOver: {
         knightSprite.running = false
+    }
+
+    Timer {
+        id: getInitialYTimer
+        interval: 1000
+        running: false
+        repeat: false
+        onTriggered: {
+            fixedY = player.y
+            console.log("fixedY: " + fixedY)
+            player.yChanged.connect(fixY)
+        }
+    }
+
+    function fixY() {
+//        if((!isJumping && player.y !== fixedY)) {
+//            var difference = fixedY-player.y
+//            player.y = player.y + Math.min(difference,3)
+//            gameScene.moveGround(Math.min(difference,3))
+//        }
     }
 
     Timer {
@@ -34,6 +61,21 @@ EntityBase {
         onTriggered: {
             entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/FireBall.qml"),
                                                             {"x": (player.x + player.width / 2 * player.scale), "y": player.y + player.height/2*player.scale, "speed": 350});
+        }
+    }
+
+    Timer {
+        id: invulnerabilityTimer
+        interval: invulnerabilityDuration / invulnerabilityBlinks
+        running: false
+        repeat: true
+        onTriggered: {
+            toggleVisibility()
+            invulnerabilityBlinksLeft--
+            if(invulnerabilityBlinksLeft === 0) {
+                visible = true
+                invulnerabilityTimer.stop()
+            }
         }
     }
 
@@ -86,9 +128,18 @@ EntityBase {
             name: "jump"
             source: "../../assets/img/knight.json"
             frameRate: realFrameRate
-            to: {"walk": 1}
+            to: {"jumpend": 1}
             frameNames: [
-                "Knight_jump_01.png",
+                "Knight_jump_01.png"
+            ]
+        }
+
+        TexturePackerSpriteVPlay {
+            name: "jumpend"
+            source: "../../assets/img/knight.json"
+            frameRate: realFrameRate
+            to: {"jumpend": 1}
+            frameNames: [
                 "Knight_jump_02.png"
             ]
         }
@@ -115,52 +166,73 @@ EntityBase {
             source: "../../assets/img/knight.json"
             frameRate: realFrameRate
             to: {"dieend": 1}
-            frameNames: [
-
-            ]
+            frameNames: []
         }
     }
 
 
     BoxCollider {
-        categories: Box.Category1
-        collidesWith: Box.Category5
+        fixedRotation: true
+        categories: Box.Category12
+        collidesWith: Box.Category7 | Box.Category8 | Box.Category16
         id: collider
-        width: player.width
-        height: player.height
-        anchors.centerIn: player
+        width: parent.width * parent.scale
+        height: (parent.height - 10) * parent.scale
+        anchors.top: parent.top
         bodyType: Body.Dynamic
 
         fixture.onBeginContact: {
-            updateHp()
+            if(other.getBody().target.entityType === "projectile") {
+                updateHp()
+            } else if(knightSprite.currentSprite === "jumpend") {
+                isJumping = false
+                knightSprite.jumpTo("walk")
+            }
         }
     }
 
+    function toggleVisibility() {
+        visible = !visible
+    }
+
     function updateHp(){
-        gameScene.updateHeartPoints()
+        healthPoints--
+        gameScene.updateHealthPoints(healthPoints)
+
+        if(healthPoints > 0 && healthPoints < 3) {
+            invulnerabilityBlinksLeft = invulnerabilityBlinks
+            invulnerabilityTimer.start()
+        }
+    }
+
+    function setHp() {
+        healthPoints = 3
+        gameScene.updateHealthPoints(healthPoints)
     }
 
     function reset() {
+        setHp()
         player.x = resetX
         player.y = resetY
         collider.body.linearVelocity = Qt.point(0,0)
         knightSprite.running = true
         knightSprite.jumpTo("walk")
+        getInitialYTimer.start()
     }
 
     function die() {
-        //stop moving here
         knightSprite.jumpTo("die")
     }
 
     function shoot() {
-        //add projectile spawning here
+        updateHp()
         knightSprite.jumpTo("cast")
         shootingTimer.start()
     }
 
     function jump() {
-        //add some velocity here
+        isJumping = true
+        collider.body.applyForceToCenter(Qt.point(0, -10000));
         knightSprite.jumpTo("jump")
     }
 }

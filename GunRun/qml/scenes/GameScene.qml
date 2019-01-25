@@ -9,8 +9,6 @@ SceneBase {
 
     property int score: 0
     property int gameStartCount: 3
-    property int heartPoints: 3
-
     signal returnToMenu()
 
     state : "wait"
@@ -54,7 +52,24 @@ SceneBase {
             id: heart_three
             source: "../../assets/img/hud/hudHeart_full.png"
         }
+    }
 
+    BorderElement {
+        id: borderLeft
+        height: gameScene.height - groundManager.height - 4
+        width: 20
+        anchors.left: gameScene.left
+        anchors.leftMargin: 9 - player.width * player.scale/2
+        anchors.top: gameScene.top
+    }
+
+    BorderElement {
+        id: borderRight
+        height: gameScene.height - groundManager.height - 4
+        width: 20
+        anchors.left: gameScene.left
+        anchors.leftMargin: 11 + player.width * player.scale
+        anchors.top: gameScene.top
     }
 
     Text {
@@ -92,27 +107,8 @@ SceneBase {
         onPressed: {
             if(gameScene.state == "running") {
                 player.shoot()
-                updateHeartPoints()
             }
         }
-    }
-
-    BorderElement {
-        entityId: "border-left"
-        id: leftBorder
-        anchors.bottom: gameScene.bottom
-        anchors.right: gameScene.gameWindowAnchorItem.left
-        width: 20
-        height: gameScene.height
-    }
-
-    BorderElement {
-        entityId: "border-right"
-        id: rightBorder
-        anchors.bottom: gameScene.bottom
-        anchors.left: gameScene.gameWindowAnchorItem.right
-        width: 20
-        height: gameScene.height
     }
 
     CloudManager {
@@ -146,6 +142,7 @@ SceneBase {
         if(gameStartCount > 1) {
             count.text = (--gameStartCount).toString()
         } else {
+            borderLeft.x = player.x - borderLeft.width
             updateGamestartTimer.stop()
             level.start()
             spawnEnemy()
@@ -154,15 +151,20 @@ SceneBase {
         }
     }
 
-    PropertyAnimation { id: playerToStartAnimation;
-        target: player;
-        property: "x";
-        to: 10;
-        duration: 3000 }
+    PropertyAnimation {
+        id: playerToStartAnimation
+        target: player
+        property: "x"
+        to: 10
+        duration: 3000
+    }
 
-    function updateHeartPoints(){
-        heartPoints--
-        switch(heartPoints) {
+    function moveGround(difference) {
+        groundManager.y += difference
+    }
+
+    function updateHealthPoints(healthPoints){
+        switch(healthPoints) {
         case 0:
             heart_one.source = "../../assets/img/hud/hudHeart_empty.png"
             break;
@@ -173,7 +175,8 @@ SceneBase {
             heart_three.source = "../../assets/img/hud/hudHeart_empty.png"
             break;
         }
-        if(heartPoints === 0){
+
+        if(healthPoints === 0){
             stopGame()
         }
     }
@@ -194,7 +197,6 @@ SceneBase {
         heart_one.source = "../../assets/img/hud/hudHeart_full.png"
         heart_two.source = "../../assets/img/hud/hudHeart_full.png"
         heart_three.source = "../../assets/img/hud/hudHeart_full.png"
-        heartPoints = 3
         score = 0
         gameStartCount = 3
         playerToStartAnimation.start()

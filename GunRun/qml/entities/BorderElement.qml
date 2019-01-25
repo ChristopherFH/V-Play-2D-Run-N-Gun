@@ -6,9 +6,12 @@ EntityBase {
     entityType: "border"
 
     BoxCollider {
-        collisionTestingOnlyMode: true
-        categories: Box.Category5
-        collidesWith: Box.Category2 | Box.Category6 | Box.Category7
+        gravityScale: 0.0
+        density: 10000
+        fixedRotation: true
+        collisionTestingOnlyMode: false
+        categories: Box.Category16
+        collidesWith: Box.Category12
         anchors.fill: border
 
         Rectangle {

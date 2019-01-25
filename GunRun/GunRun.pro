@@ -67,5 +67,6 @@ DISTFILES += \
     qml/common/UpGroundElement.qml \
     qml/entities/GroundElementDown.qml \
     qml/common/GroundElementFlat.qml \
-    qml/common/SimpleGroundManager.qml
+    qml/common/SimpleGroundManager.qml \
+    qml/entities/BorderElement.qml
 

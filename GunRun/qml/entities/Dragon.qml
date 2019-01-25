@@ -94,13 +94,14 @@ EntityBase {
     }
 
     BoxCollider {
+        fixedRotation: true
         collisionTestingOnlyMode: true
         categories: Box.Category3
-        collidesWith: Box.Category5 | Box.Category2
+        collidesWith: Box.Category2
         id: collider
-        width: dragon.width
-        height: dragon.height
-        anchors.centerIn: parent
+        width: parent.width * parent.scale
+        height: parent.height * parent.scale
+        anchors.top: parent.top
         bodyType: Body.Dynamic
 
         fixture.onBeginContact: {

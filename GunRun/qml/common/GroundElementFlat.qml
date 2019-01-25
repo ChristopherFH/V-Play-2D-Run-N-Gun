@@ -13,6 +13,17 @@ GroundElement {
         source: "../../assets/img/tiles/tileBlue_05.png"
     }
 
+    BoxCollider {
+        gravityScale: 0.00000
+        density: 10000
+        fixedRotation: true
+        collisionTestingOnlyMode: false
+        categories: Box.Category7
+        collidesWith: Box.Category12
+        width: groundElementFlat.width
+        height: groundElementFlat.height
+    }
+
     function getNextTile(random) {
         if(random < 0.33)
             return "Up"

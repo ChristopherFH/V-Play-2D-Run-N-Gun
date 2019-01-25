@@ -20,7 +20,8 @@ GameWindow {
 
     PhysicsWorld {
         id: physicsWorld
-        gravity.y: 0
+        gravity.y: 9.81
+        debugDrawVisible: true
     }
 
 
@@ -73,7 +74,7 @@ GameWindow {
         onReturnToMenu: {
             window.state = "menu"
             menuScene.startScene()
-            gameScene.stopScene()
+            gameScene.stopGame()
         }
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application

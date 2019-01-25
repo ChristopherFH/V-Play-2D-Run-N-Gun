@@ -21,14 +21,6 @@ EntityBase {
         reset()
     }
 
-    BoxCollider {
-        collisionTestingOnlyMode: true
-        categories: Box.Category7
-        collidesWith: Box.Category5
-        width: groundElement.width
-        height: groundElement.height
-    }
-
     function start() {
         animation.start()
     }

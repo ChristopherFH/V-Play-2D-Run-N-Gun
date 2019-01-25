@@ -24,7 +24,7 @@ SceneBase {
         source: "../../assets/img/KnightRun.png"
     }
 
-    SimpleGroundManager {
+    GroundManager {
         id: groundManager
         anchors.horizontalCenter: menuScene.gameWindowAnchorItem.horizontalCenter
         anchors.bottom: menuScene.gameWindowAnchorItem.bottom
@@ -37,34 +37,18 @@ SceneBase {
         resetY: menuScene.gameWindowAnchorItem.height - groundManager.height - player.height * player.scale + player.height / 20 * player.scale
     }
 
-
-    BorderElement {
-        entityId: "border-left"
-        id: leftBorder
-        anchors.bottom: menuScene.bottom
-        anchors.right: menuScene.gameWindowAnchorItem.left
-        width: 20
-        height: menuScene.height
-    }
-
-    BorderElement {
-        entityId: "border-right"
-        id: rightBorder
-        anchors.bottom: menuScene.bottom
-        anchors.left: menuScene.gameWindowAnchorItem.right
-        width: 20
-        height: menuScene.height
-    }
-
-
     // menu
     Menu {
         anchors.centerIn: parent
 
-//        onScorePressed: scoreAction()
+        onScorePressed: scoreAction()
         onPlayPressed: {
             startGame()
         }
+    }
+
+    function scoreAction() {
+        player.jump()
     }
 
     function startScene() {

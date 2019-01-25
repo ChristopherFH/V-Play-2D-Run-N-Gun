@@ -22,21 +22,6 @@ EntityBase {
         source: "../../assets/img/clouds/cloud"+cloudNumber+".png"
     }
 
-    BoxCollider {
-        collisionTestingOnlyMode: true
-        categories: Box.Category6
-        collidesWith: Box.Category5
-        id: collider
-        width: cloud.width
-        height: cloud.height
-        bodyType: Body.Dynamic
-        fixture.onEndContact: {
-            var collidedEntity = other.getBody().target;
-            if(collidedEntity.entityType === "border" && collidedEntity.entityId === "left")
-                removeEntity()
-        }
-    }
-
     function start() {
         cloudAnimation.start()
     }
@@ -51,5 +36,9 @@ EntityBase {
         property: "x"
         velocity: -speed
         running: false
+        minPropertyValue: -cloud.width
+        onLimitReached: {
+            removeEntity()
+        }
     }
 }

@@ -11,6 +11,8 @@ EntityBase {
     height: fireballSprite.height
     property int speed: 350
     property int realFrameRate: 10
+    property int maxValueX: 2000
+    property int minValueX: 0
 
     Component.onCompleted: {
         animation.start()
@@ -35,12 +37,14 @@ EntityBase {
     }
 
     BoxCollider {
+        fixedRotation: true
         collisionTestingOnlyMode: true
         categories: Box.Category2
-        collidesWith: Box.Category5 | Box.Category3
+        collidesWith: Box.Category3
         id: collider
-        width: fireball.width
-        height: fireball.height
+        width: parent.width * parent.scale
+        height: parent.height * parent.scale
+        anchors.top: parent.top
         bodyType: Body.Dynamic
 
         fixture.onEndContact: {
@@ -55,5 +59,10 @@ EntityBase {
         property: "x"
         velocity: speed
         running: false
+        maxPropertyValue: maxValueX
+        minPropertyValue: minValueX
+        onLimitReached: {
+            removeEntity()
+        }
     }
 }

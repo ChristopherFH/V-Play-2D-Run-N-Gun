@@ -5,8 +5,6 @@ EntityBase {
     id: groundManager
     entityType: "groundManager"
 
-    property EntityBase borderLeft
-    property EntityBase borderRight
     property GroundElement lastElement
 
     property int groundElementId: 1
@@ -20,7 +18,6 @@ EntityBase {
 
     RandomGenerator {
         id: randomGenerator
-        seed: 1
     }
 
     function start() {
@@ -28,9 +25,6 @@ EntityBase {
         currentVerticalOffset = 0
         var groundElements = entityManager.getEntityArrayByType("groundElement")
         groundElements.forEach(function(entity) {entity.removeEntity()})
-
-        borderLeft = entityManager.getEntityById("border-left")
-        borderRight = entityManager.getEntityById("border-right")
 
         spawnAt(0,"Flat")
         while(lastElement.getX() <= groundManager.width) {
