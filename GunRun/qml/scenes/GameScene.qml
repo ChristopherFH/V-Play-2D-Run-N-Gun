@@ -103,12 +103,33 @@ SceneBase {
     }
 
     MouseArea {
+        //        property double pressTime: 0
+        property int holdDuration: 100
+        property int dragDistance: mouseControl.height/4
+        property int startPosition: 0
+
         id: mouseControl
         anchors.fill: gameScene.gameWindowAnchorItem
         onPressed: {
+            //            pressTime = new Date().getTime()
+            startPosition = mouse.y
+        }
+
+        onReleased: {
             if(gameScene.state == "running") {
-                player.shoot()
+                if(isSwipe(mouse.y)) {
+                    player.jump()
+                } else {
+                    player.shoot()
+                }
             }
+        }
+
+        function isSwipe(releaseX) {
+            //            var timeDiff = (new Date().getTime()) - pressTime
+
+            console.log("swipe called: distance: " + (startPosition - releaseX) + "/" + dragDistance)
+            return /*timeDiff > holdDuration &&*/ startPosition - releaseX > dragDistance
         }
     }
 
@@ -166,7 +187,7 @@ SceneBase {
         groundElements.forEach(function(element) {
             element.y += difference
         })
-//        groundManager.y += difference
+        //        groundManager.y += difference
     }
 
     function updateHealthPoints(healthPoints){
