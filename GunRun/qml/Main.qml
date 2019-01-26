@@ -21,7 +21,7 @@ GameWindow {
     PhysicsWorld {
         id: physicsWorld
         gravity.y: 9.81
-        debugDrawVisible: true
+//        debugDrawVisible: true
     }
 
 

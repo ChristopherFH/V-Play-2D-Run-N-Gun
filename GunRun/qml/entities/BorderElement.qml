@@ -14,11 +14,11 @@ EntityBase {
         collidesWith: Box.Category12
         anchors.fill: border
 
-        Rectangle {
-            id: rect
-            anchors.fill: parent
-            color: "#8000ff00"
-        }
+//        Rectangle {
+//            id: rect
+//            anchors.fill: parent
+//            color: "#8000ff00"
+//        }
     }
 
 }

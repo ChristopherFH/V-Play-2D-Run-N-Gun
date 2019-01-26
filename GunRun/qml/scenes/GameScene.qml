@@ -107,7 +107,7 @@ SceneBase {
         anchors.fill: gameScene.gameWindowAnchorItem
         onPressed: {
             if(gameScene.state == "running") {
-                player.jump()
+                player.shoot()
             }
         }
     }
@@ -166,7 +166,7 @@ SceneBase {
         groundElements.forEach(function(element) {
             element.y += difference
         })
-        groundManager.y += difference
+//        groundManager.y += difference
     }
 
     function updateHealthPoints(healthPoints){

@@ -22,6 +22,7 @@ EntityBase {
 
     function start() {
         randomGenerator.setSeed(1)
+        lastElement = null
         currentVerticalOffset = 0
         var groundElements = entityManager.getEntityArrayByType("groundElement")
         groundElements.forEach(function(entity) {entity.removeEntity()})
