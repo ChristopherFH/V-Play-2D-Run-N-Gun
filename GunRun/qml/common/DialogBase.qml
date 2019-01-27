@@ -12,6 +12,8 @@ Item {
     visible: opacity === 0 ? false : true
     enabled: visible
 
+    property int distance: 0
+
     signal playAgainPressed()
     signal exitPressed()
 
@@ -63,7 +65,7 @@ Item {
                 anchors.verticalCenterOffset: -parent.height / 10
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "black"
-                text: "99m"
+                text: distance.toString() + "m"
                 font.pixelSize: 20
                 font.family: fontloader.name
             }

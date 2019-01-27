@@ -9,13 +9,19 @@ SceneBase {
 
     property int score: 0
     property int gameStartCount: 3
-    signal returnToMenu()
+    signal returnToMenu
 
-    state : "wait"
+    property int startingGroundElementId
+
+    state: "wait"
 
     Level {
         id: level
         anchors.fill: parent
+    }
+
+    DataManager {
+        id: dataManager
     }
 
     GroundManager {
@@ -25,7 +31,20 @@ SceneBase {
         width: gameScene.gameWindowAnchorItem.width
     }
 
-    Row{
+    Text {
+        id: distance
+        visible: false
+        text: (groundManager.groundElementId - startingGroundElementId).toString()
+        anchors.topMargin: 0
+        anchors.rightMargin: 10
+        color: "white"
+        anchors.top: gameScene.gameWindowAnchorItem.top
+        anchors.right: gameScene.gameWindowAnchorItem.right
+        font.pixelSize: 20
+        font.family: fontloader.name
+    }
+
+    Row {
         id: heartPoints_row
         anchors.topMargin: 10
         anchors.leftMargin: 10
@@ -59,7 +78,7 @@ SceneBase {
         height: gameScene.height - groundManager.height - 4
         width: 20
         anchors.left: gameScene.left
-        anchors.leftMargin: 9 - player.width * player.scale/2
+        anchors.leftMargin: 9 - player.width * player.scale / 2
         anchors.top: gameScene.top
     }
 
@@ -84,11 +103,12 @@ SceneBase {
 
     Player {
         id: player
-        resetX: gameScene.gameWindowAnchorItem.width/2 - player.width/2 * player.scale
-        resetY: gameScene.gameWindowAnchorItem.height - groundManager.height - player.height * player.scale + player.height/20 * player.scale
+        resetX: gameScene.gameWindowAnchorItem.width / 2 - player.width / 2 * player.scale
+        resetY: gameScene.gameWindowAnchorItem.height - groundManager.height
+                - player.height * player.scale + player.height / 20 * player.scale
 
         onGameOver: {
-            if(gameScene.state === "gameOver")
+            if (gameScene.state === "gameOver")
                 return
             gameScene.state = "gameOver"
         }
@@ -105,7 +125,7 @@ SceneBase {
     MouseArea {
         //        property double pressTime: 0
         property int holdDuration: 100
-        property int dragDistance: mouseControl.height/4
+        property int dragDistance: mouseControl.height / 4
         property int startPosition: 0
 
         id: mouseControl
@@ -116,8 +136,8 @@ SceneBase {
         }
 
         onReleased: {
-            if(gameScene.state == "running") {
-                if(isSwipe(mouse.y)) {
+            if (gameScene.state == "running") {
+                if (isSwipe(mouse.y)) {
                     player.jump()
                 } else {
                     player.shoot()
@@ -126,9 +146,10 @@ SceneBase {
         }
 
         function isSwipe(releaseX) {
-            //            var timeDiff = (new Date().getTime()) - pressTime
 
-            console.log("swipe called: distance: " + (startPosition - releaseX) + "/" + dragDistance)
+            //            var timeDiff = (new Date().getTime()) - pressTime
+            console.log("swipe called: distance: " + (startPosition - releaseX)
+                        + "/" + dragDistance)
             return /*timeDiff > holdDuration &&*/ startPosition - releaseX > dragDistance
         }
     }
@@ -145,8 +166,6 @@ SceneBase {
         //            anchors.centerIn: cloudManager
         //            color: "#80ff0000"
         //        }
-
-
     }
 
     DialogBase {
@@ -160,8 +179,8 @@ SceneBase {
         }
     }
 
-    function updateCount(){
-        if(gameStartCount > 1) {
+    function updateCount() {
+        if (gameStartCount > 1) {
             count.text = (--gameStartCount).toString()
         } else {
             borderLeft.x = player.x - borderLeft.width
@@ -171,6 +190,8 @@ SceneBase {
             spawnEnemy()
             gameScene.state = "running"
             count.text = ""
+            startingGroundElementId = groundManager.groundElementId
+            distance.visible = true
         }
     }
 
@@ -184,34 +205,36 @@ SceneBase {
 
     function moveGround(difference) {
         var groundElements = entityManager.getEntityArrayByType("groundElement")
-        groundElements.forEach(function(element) {
+        groundElements.forEach(function (element) {
             element.y += difference
         })
         //        groundManager.y += difference
     }
 
-    function updateHealthPoints(healthPoints){
-        switch(healthPoints) {
+    function updateHealthPoints(healthPoints) {
+        switch (healthPoints) {
         case 0:
             heart_one.source = "../../assets/img/hud/hudHeart_empty.png"
-            break;
+            break
         case 1:
             heart_two.source = "../../assets/img/hud/hudHeart_empty.png"
-            break;
+            break
         case 2:
             heart_three.source = "../../assets/img/hud/hudHeart_empty.png"
-            break;
+            break
         }
 
-        if(healthPoints === 0){
+        if (healthPoints === 0) {
             stopGame()
         }
     }
 
     function spawnEnemy() {
-        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Dragon.qml"),
-                                                        {"resetX": gameScene.gameWindowAnchorItem.width - 10,
-                                                            "resetY": gameScene.gameWindowAnchorItem.height - groundManager.height})
+        entityManager.createEntityFromUrlWithProperties(
+                    Qt.resolvedUrl("../entities/Dragon.qml"), {
+                        "resetX": gameScene.gameWindowAnchorItem.width - 10,
+                        "resetY": gameScene.gameWindowAnchorItem.height - groundManager.height
+                    })
     }
 
     function startScene() {
@@ -239,17 +262,25 @@ SceneBase {
         groundManager.stop()
         cloudManager.stop()
         gameScene.state = "gameOver"
+        gameOverPanel.distance = distance.text
+        distance.visible = false
+        dataManager.storeValue(distance.text, groundManager.seed)
     }
 
     states: [
         State {
             name: "gameOver"
-            PropertyChanges {target: gameOverPanel; opacity: 1}
+            PropertyChanges {
+                target: gameOverPanel
+                opacity: 1
+            }
         },
         State {
             name: "wait"
-            PropertyChanges {target: gameOverPanel; opacity: 0}
+            PropertyChanges {
+                target: gameOverPanel
+                opacity: 0
+            }
         }
     ]
-
 }

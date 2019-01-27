@@ -68,5 +68,7 @@ DISTFILES += \
     qml/entities/GroundElementDown.qml \
     qml/common/GroundElementFlat.qml \
     qml/common/SimpleGroundManager.qml \
-    qml/entities/BorderElement.qml
+    qml/entities/BorderElement.qml \
+    qml/common/DataManager.qml \
+    qml/scenes/HighscoreScene.qml
 

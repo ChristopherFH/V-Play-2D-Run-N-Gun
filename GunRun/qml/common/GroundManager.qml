@@ -7,6 +7,8 @@ EntityBase {
 
     property GroundElement lastElement: null
 
+    property int seed: 1
+
     property int groundElementId: 1
     property int speed: 100
     height: 25
@@ -21,7 +23,7 @@ EntityBase {
     }
 
     function start() {
-        randomGenerator.setSeed(1)
+        randomGenerator.setSeed(seed)
         lastElement = null
         currentVerticalOffset = 0
         var groundElements = entityManager.getEntityArrayByType("groundElement")

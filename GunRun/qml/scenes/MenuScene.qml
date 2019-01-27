@@ -7,6 +7,7 @@ SceneBase {
     id: menuScene
 
     signal startGame()
+    signal startHighscore()
 
     CloudManager {
         id: cloudManager
@@ -41,14 +42,13 @@ SceneBase {
     Menu {
         anchors.centerIn: parent
 
-        onScorePressed: scoreAction()
+        onScorePressed: {
+            startHighscore()
+        }
+
         onPlayPressed: {
             startGame()
         }
-    }
-
-    function scoreAction() {
-        player.jump()
     }
 
     function startScene() {

@@ -51,6 +51,12 @@ GameWindow {
             menuScene.stopScene()
             gameScene.startScene()
         }
+        onStartHighscore: {
+            window.state = "highscore"
+            menuScene.stopScene()
+            highscoreScene.startScene()
+            highscoreScene.loadModel()
+        }
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
         onBackButtonPressed: {
@@ -67,7 +73,7 @@ GameWindow {
         }
     }
 
-    // menu scene
+    // game scene
     GameScene {
         id: gameScene
 
@@ -79,17 +85,30 @@ GameWindow {
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
         onBackButtonPressed: {
-            nativeUtils.displayMessageBox(qsTr("Really quit the game?"), "", 2);
+            window.state = "menu"
+            menuScene.startScene()
+            gameScene.stopGame()
         }
-        // listen to the return value of the MessageBox
-        Connections {
-            target: nativeUtils
-            onMessageBoxFinished: {
-                // only quit, if the activeScene is menuScene - the messageBox might also get opened from other scenes in your code
-                if(accepted && window.activeScene === menuScene)
-                    Qt.quit()
-            }
+
+    }
+
+    // game scene
+    HighscoreScene {
+        id: highscoreScene
+
+//        onReturnToMenu: {
+//            window.state = "menu"
+//            menuScene.startScene()
+//            gameScene.stopGame()
+//        }
+
+        // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
+        onBackButtonPressed: {
+            window.state = "menu"
+            menuScene.startScene()
+            highscoreScene.stopGame()
         }
+
     }
 
     // menuScene is our first scene, so set the state to menu initially
@@ -107,6 +126,11 @@ GameWindow {
             name: "game"
             PropertyChanges {target: gameScene; opacity: 1}
             PropertyChanges {target: window; activeScene: gameScene}
+        },
+        State {
+            name: "highscore"
+            PropertyChanges {target: highscoreScene; opacity: 1}
+            PropertyChanges {target: window; activeScene: highscoreScene}
         }
     ]
 }
