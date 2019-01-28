@@ -51,11 +51,12 @@ EntityBase {
     function spawnAt(atX,element) {
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement"+element+".qml"),
                                                         {"resetX": atX,
-                                                            "resetY": lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY(),
-                                                            "speed": speed,
-                                                            "spawnable": ((atX + groundManager.height) >= groundManager.width),
-                                                            "groundWidth": groundManager.width,
-                                                            "entityId": groundElementId++})
+                                                         "resetY": lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY(),
+                                                         "speed": speed,
+                                                         "spawnable": ((atX + groundManager.height) >= groundManager.width),
+                                                         "despawnX": groundManager.x,
+                                                         "groundWidth": groundManager.width,
+                                                         "entityId": groundElementId++})
         lastElement = entityManager.getLastAddedEntity()
         currentVerticalOffset += lastElement.getVerticalOffset()
         lastElement.spawnNext.connect(spawnNext)

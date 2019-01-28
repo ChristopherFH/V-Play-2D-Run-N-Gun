@@ -14,6 +14,7 @@ EntityBase {
     property int speed: 100
     property bool spawnable: false
     property int groundWidth: 0
+    property int despawnX: 0
 
     signal spawnNext()
 
@@ -39,7 +40,7 @@ EntityBase {
         if(spawnable)
             animation.minPropertyValue = groundWidth - groundElement.width
         else
-            animation.minPropertyValue = -groundElement.width
+            animation.minPropertyValue = despawnX - groundElement.width
 
         animation.start()
     }
@@ -55,7 +56,7 @@ EntityBase {
     function initiateSpawn() {
         spawnNext()
         spawnable = false
-        animation.minPropertyValue = -groundElement.width
+        animation.minPropertyValue = despawnX-groundElement.width
     }
 
     function getVerticalOffset() {

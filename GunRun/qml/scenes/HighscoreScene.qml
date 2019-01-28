@@ -8,9 +8,11 @@ import "../game"
 SceneBase {
     id: highscoreScene
 
-//    Component.onCompleted: {
-//        myListView.model = loadModel()
-//    }
+    //    Component.onCompleted: {
+    //        myListView.model = loadModel()
+    //    }
+
+    signal playLevel(int seed)
 
     ListView {
         id: myListView
@@ -46,7 +48,7 @@ SceneBase {
             }
 
             Text {
-                text: "Seed"
+                text: "World"
                 width: myListView.widthSeed
                 horizontalAlignment: Text.AlignHCenter
                 anchors.verticalCenter: parent.verticalCenter
@@ -54,12 +56,12 @@ SceneBase {
         }
 
         section.property: "index"
-           section.delegate: SimpleSection {
-             enabled: true
-             onSelected: {
-               console.log("Section Selected: "+section)
-               }
-           }
+        section.delegate: SimpleSection {
+            enabled: true
+            onSelected: {
+                console.log("Section Selected: "+section)
+            }
+        }
 
         delegate: Row {
             id: listviewDelegate
@@ -130,7 +132,7 @@ SceneBase {
             var temp = JSON.parse(jsonString)
             temp.sort(function(a, b){
                 var keyA = a.distance,
-                    keyB = b.distance;
+                        keyB = b.distance;
                 if(keyA < keyB) return -1;
                 if(keyA > keyB) return 1;
                 return 0;
