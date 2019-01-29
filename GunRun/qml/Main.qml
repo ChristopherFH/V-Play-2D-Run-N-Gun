@@ -49,7 +49,7 @@ GameWindow {
         onStartGame: {
             window.state = "game"
             menuScene.stopScene()
-            gameScene.startScene()
+            gameScene.startScene(utils.generateRandomValueBetween(1,100000))
         }
         onStartHighscore: {
             window.state = "highscore"
@@ -101,6 +101,12 @@ GameWindow {
 //            menuScene.startScene()
 //            gameScene.stopGame()
 //        }
+
+        onPlayLevel: {
+            window.state = "game"
+            highscoreScene.stopScene()
+            gameScene.startScene(seed)
+        }
 
         // the menu scene is our start scene, so if back is pressed there we ask the user if he wants to quit the application
         onBackButtonPressed: {

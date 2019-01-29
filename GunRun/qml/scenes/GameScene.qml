@@ -9,7 +9,7 @@ SceneBase {
 
     property int score: 0
     property int gameStartCount: 3
-    signal returnToMenu()
+    signal returnToMenu
 
     property int startingGroundElementId
 
@@ -237,11 +237,11 @@ SceneBase {
                     })
     }
 
-    function startScene() {
+    function startScene(seed) {
         state = "wait"
         borderRight.visible = false
         cloudManager.start()
-        groundManager.start()
+        groundManager.start(seed)
 
         player.reset()
         level.reset()
@@ -255,6 +255,9 @@ SceneBase {
     }
 
     function stopGame() {
+        if(state === "gameOver")
+            return
+
         console.log("STOP GAME")
         // show dialog
         level.stop()

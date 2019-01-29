@@ -22,7 +22,10 @@ EntityBase {
         id: randomGenerator
     }
 
-    function start() {
+    function start(startSeed) {
+        if(typeof startSeed !== "undefined" && startSeed !== null)
+            seed = startSeed
+
         console.log("groundWidth: " + groundManager.x + "/" + groundManager.width)
         randomGenerator.setSeed(seed)
         lastElement = null

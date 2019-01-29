@@ -19,17 +19,18 @@ SceneBase {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.verticalCenter: parent.verticalCenter
 
-        property real widthIndex: dp(20)
-        property real widthScore: dp(30)
-        property real widthSeed: dp(20)
+        property real widthIndex: width / 6
+        property real widthScore: width / 4
+        property real widthSeed: width / 4
+        property real widthPlayButton: width / 4
         property real itemRowSpacing: dp(20)
 
         width: parent.width / 2
         height: parent.height / 2
 
         model: loadModel()
-        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-        focus: true
+//        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
+//        focus: true
 
         header: Row {
             spacing: myListView.itemRowSpacing
@@ -37,6 +38,7 @@ SceneBase {
             Text {
                 text: "Index"
                 width: myListView.widthIndex
+                horizontalAlignment: Text.AlignHCenter
                 anchors.verticalCenter: parent.verticalCenter
             }
 
@@ -50,6 +52,13 @@ SceneBase {
             Text {
                 text: "World"
                 width: myListView.widthSeed
+                horizontalAlignment: Text.AlignHCenter
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Text {
+                text: ""
+                width: myListView.widthPlayButton
                 horizontalAlignment: Text.AlignHCenter
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -68,6 +77,7 @@ SceneBase {
             spacing: myListView.itemRowSpacing
 
             Text {
+                id: indexText
                 width: myListView.widthIndex
                 text: modelData.index
                 horizontalAlignment: Text.AlignHCenter
@@ -86,6 +96,29 @@ SceneBase {
                 width: myListView.widthSeed
                 horizontalAlignment: Text.AlignHCenter
                 anchors.verticalCenter: parent.verticalCenter
+            }
+
+            GameOverButton {
+                anchors.verticalCenter: parent.verticalCenter
+                width: myListView.widthPlayButton
+                height: indexText.height + dp(4)
+                anchors.top: indexText.top
+                anchors.bottom: indexText.bottom
+                anchors.topMargin: dp(2)
+                anchors.bottomMargin: dp(2)
+                onClicked: {
+                    playLevel(modelData.seed)
+                }
+                source: "../../assets/img/pixel-art/uipack_fixed/PNG/blue_button03.png"
+
+                Text {
+                    color: "white"
+                    anchors.verticalCenterOffset: -parent.height / 10
+                    text: "play"
+                    anchors.centerIn: parent
+                    font.pixelSize: parent.height / 2.5
+                    font.family: fontloader.name
+                }
             }
         }
     }
@@ -131,11 +164,14 @@ SceneBase {
         if (jsonString !== undefined) {
             var temp = JSON.parse(jsonString)
             temp.sort(function(a, b){
-                var keyA = a.distance,
-                        keyB = b.distance;
-                if(keyA < keyB) return -1;
-                if(keyA > keyB) return 1;
-                return 0;
+                var keyA = parseInt(a.distance)
+                var keyB = parseInt(b.distance)
+
+                if(keyA < keyB)
+                    return 1
+                if(keyA > keyB)
+                    return -1
+                return 0
             });
             var index = 1
             temp.forEach(function(entry) {
