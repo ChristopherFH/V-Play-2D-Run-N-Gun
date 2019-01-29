@@ -72,6 +72,7 @@ EntityBase {
             toggleVisibility()
             invulnerabilityBlinksLeft--
             if(invulnerabilityBlinksLeft === 0) {
+                knightSprite.visible = true
                 isInvulnerable = false
                 invulnerabilityTimer.stop()
             }
@@ -170,30 +171,54 @@ EntityBase {
     }
 
 
-    BoxCollider {
+    PolygonCollider {
+        friction: 0.0
         fixedRotation: true
         categories: Box.Category12
         collidesWith: Box.Category7 | Box.Category16
         id: collider
-        width: parent.width * parent.scale
-        height: (parent.height-10) * parent.scale
         anchors.top: parent.top
         bodyType: Body.Dynamic
+
+        property double topY: 0
+        property double bottomYOffset: 10
+        property double bottomY: topY + (parent.height - bottomYOffset) * parent.scale
+        property double leftX: 0
+        property double rightX: leftX + parent.width * parent.scale
+        property double midY: topY + (parent.height - parent.width/4 - bottomYOffset) * parent.scale
+        property double bottomLeft: (parent.width/4) * parent.scale
+        property double bottomRight: bottomLeft + (parent.width/2) * parent.scale
 
         fixture.onBeginContact: {
             if(other.getBody().target.entityType === "projectile") {
                 updateHp()
-            }else if(knightSprite.currentSprite === "jumpend") {
+            } else if(knightSprite.currentSprite === "jumpend") {
                 isJumping = false
                 knightSprite.jumpTo("walk")
             }
         }
+
+        vertices: [
+            Qt.point(leftX, topY),
+            Qt.point(leftX, midY),
+            Qt.point(bottomLeft, bottomY),
+            Qt.point(bottomRight, bottomY),
+            Qt.point(rightX, midY), // top right
+            Qt.point(rightX, topY) // top right
+
+        ]
+        //        width: parent.width * parent.scale
+        //        height: (parent.height-10) * parent.scale
     }
 
     function toggleVisibility() {
+        knightSprite.visible = !knightSprite.visible
     }
 
     function updateHp(){
+        if(isInvulnerable)
+            return
+
         healthPoints--
         gameScene.updateHealthPoints(healthPoints)
 

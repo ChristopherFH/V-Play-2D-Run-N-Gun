@@ -30,6 +30,8 @@ GroundElement {
     }
 
     PolygonCollider {
+        bodyType: Body.Static
+        friction: 0.0
         gravityScale: 0.00000
         density: 10000
         fixedRotation: true
@@ -41,7 +43,7 @@ GroundElement {
             Qt.point(0, parent.height), // bottom left
             Qt.point(parent.width, parent.height), // bottom right
             Qt.point(parent.width, 0) // top right
-      ]
+        ]
     }
 
     function resetHook() {
