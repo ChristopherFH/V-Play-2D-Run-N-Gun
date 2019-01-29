@@ -23,14 +23,15 @@ EntityBase {
     }
 
     function start() {
+        console.log("groundWidth: " + groundManager.x + "/" + groundManager.width)
         randomGenerator.setSeed(seed)
         lastElement = null
         currentVerticalOffset = 0
         var groundElements = entityManager.getEntityArrayByType("groundElement")
         groundElements.forEach(function(entity) {entity.removeEntity()})
 
-        spawnAt(0,"Flat")
-        while(lastElement.getX() <= groundManager.width) {
+        spawnAt(groundManager.x,"Flat")
+        while(lastElement.getX() <= groundManager.x + groundManager.width) {
             spawnInitialNext()
         }
     }
@@ -45,7 +46,7 @@ EntityBase {
     }
 
     function spawnNext(){
-        spawnAt(groundManager.width-1,getNextTile())
+        spawnAt(groundManager.x + groundManager.width-1,getNextTile())
     }
 
     function spawnAt(atX,element) {
@@ -53,9 +54,9 @@ EntityBase {
                                                         {"resetX": atX,
                                                          "resetY": lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY(),
                                                          "speed": speed,
-                                                         "spawnable": ((atX + groundManager.height) >= groundManager.width),
+                                                         "spawnable": ((atX + groundManager.height) >= groundManager.x + groundManager.width),
                                                          "despawnX": groundManager.x,
-                                                         "groundWidth": groundManager.width,
+                                                         "groundWidth": groundManager.x + groundManager.width,
                                                          "entityId": groundElementId++})
         lastElement = entityManager.getLastAddedEntity()
         currentVerticalOffset += lastElement.getVerticalOffset()

@@ -9,7 +9,7 @@ SceneBase {
 
     property int score: 0
     property int gameStartCount: 3
-    signal returnToMenu
+    signal returnToMenu()
 
     property int startingGroundElementId
 

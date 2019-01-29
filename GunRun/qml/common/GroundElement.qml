@@ -15,6 +15,7 @@ EntityBase {
     property bool spawnable: false
     property int groundWidth: 0
     property int despawnX: 0
+    property int partsize: 25
 
     signal spawnNext()
 

@@ -4,23 +4,28 @@ import QtQuick 2.0
 GroundElement {
     id: groundElementUp
     variationType: "up"
-    height: 50
+    width: column.width
+    height: column.height
 
     Column {
+        id: column
         Image {
-            width: groundElementUp.width
-            height: groundElementUp.height/2
-            id: image
-            anchors.bottom: image2.top
+            width: partsize
+            height: partsize
             source: "../../assets/img/tiles/tileBlue_09.png"
         }
-
         Image {
-            width: groundElementUp.width
-            height: groundElementUp.height/2
-            id: image2
-            anchors.top: parent.bottom
+            width: partsize
+            height: partsize
             source: "../../assets/img/tiles/tileBlue_18.png"
+        }
+        Repeater {
+            model: 20
+            Image {
+                width: partsize
+                height: partsize
+                source: "../../assets/img/tiles/tileBlue_03.png"
+            }
         }
     }
 
@@ -32,15 +37,23 @@ GroundElement {
         categories: Box.Category7
         collidesWith: Box.Category12
         vertices: [
-            Qt.point(0, 0), // top left
-            Qt.point(0, parent.height/2), // bottom left
-            Qt.point(parent.width, parent.height/2), // bottom right
-            Qt.point(parent.width, -parent.height/2) // top right
+            Qt.point(0, partsize), // top left
+            Qt.point(0, parent.height), // bottom left
+            Qt.point(parent.width, parent.height), // bottom right
+            Qt.point(parent.width, 0) // top right
       ]
     }
 
+    function resetHook() {
+        resetY += getVerticalOffset()
+    }
+
     function getVerticalOffset() {
-        return -groundElementUp.height/2
+        return -partsize
+    }
+
+    function getY() {
+        return groundElementUp.y
     }
 
     function getNextTile(random) {

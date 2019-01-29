@@ -41,3 +41,6 @@ target_wrapper.*
 
 # QtCreator CMake
 CMakeLists.txt.user*
+GunRun/android-build/*
+GunRun/android-libGunRun.so-deployment-settings.json
+GunRun/qrc_resources_user.obj

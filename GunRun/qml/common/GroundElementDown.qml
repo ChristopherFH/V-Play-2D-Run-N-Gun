@@ -4,22 +4,30 @@ import QtQuick 2.0
 GroundElement {
     id: groundElementDown
     variationType: "down"
-    height: 50
+    width: column.width
+    height: column.height
 
-    Image {
-        width: groundElementDown.width
-        height: groundElementDown.height/2
-        id: image
-        anchors.bottom: image2.top
-        source: "../../assets/img/tiles/tileBlue_10.png"
-    }
+    Column {
+        id: column
+        Image {
+            width: partsize
+            height: partsize
+            source: "../../assets/img/tiles/tileBlue_10.png"
+        }
 
-    Image {
-        width: groundElementDown.width
-        height: groundElementDown.height/2
-        id: image2
-        anchors.bottom: parent.bottom
-        source: "../../assets/img/tiles/tileBlue_19.png"
+        Image {
+            width: partsize
+            height: partsize
+            source: "../../assets/img/tiles/tileBlue_19.png"
+        }
+        Repeater {
+            model: 20
+            Image {
+                width: partsize
+                height: partsize
+                source: "../../assets/img/tiles/tileBlue_03.png"
+            }
+        }
     }
 
     PolygonCollider {
@@ -33,12 +41,12 @@ GroundElement {
             Qt.point(0, 0), // top left
             Qt.point(0, parent.height), // bottom left
             Qt.point(parent.width, parent.height), // bottom right
-            Qt.point(parent.width, parent.height/2) // top right
-      ]
+            Qt.point(parent.width, partsize) // top right
+        ]
     }
 
     function getVerticalOffset() {
-        return groundElementDown.height/2
+        return partsize
     }
 
     function getNextTile(random) {
