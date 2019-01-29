@@ -13,6 +13,7 @@ App {
 
     Storage {
         id: storage
+        cacheEnabled: false
 
         onStorageError: {
             console.debug("there was an error:", errorData.message)
@@ -32,7 +33,7 @@ App {
                           seed: seed
                       })
             temp.sort(function (a, b) {
-                var keyA = a.distance, keyB = b.distance
+                var keyA = parseInt(a.distance), keyB = parseInt(b.distance)
                 if (keyA > keyB)
                     return -1
                 if (keyA < keyB)

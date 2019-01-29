@@ -30,7 +30,7 @@ GroundElement {
     }
 
     PolygonCollider {
-        bodyType: Body.Static
+        bodyType: Body.Dynamic
         friction: 0.0
         gravityScale: 0.00000
         density: 10000
