@@ -19,6 +19,7 @@ SceneBase {
     // the "logo"
     Image {
         scale: 0.6
+        z: 100
         anchors.topMargin: 15
         anchors.horizontalCenter: menuScene.horizontalCenter
         anchors.top:  menuScene.top
@@ -41,6 +42,7 @@ SceneBase {
     // menu
     Menu {
         anchors.centerIn: parent
+        z: 100
 
         onScorePressed: {
             startHighscore()

@@ -4,14 +4,15 @@ import QtQuick 2.0
 EntityBase {
     id: groundManager
     entityType: "groundManager"
+    height: 25
 
     property GroundElement lastElement: null
 
     property int seed: 1
 
     property int groundElementId: 1
+    property int enemyId: 1
     property int speed: 100
-    height: 25
     property int currentVerticalOffset: 0
 
     property int newTileEvery: 3
@@ -33,10 +34,11 @@ EntityBase {
         var groundElements = entityManager.getEntityArrayByType("groundElement")
         groundElements.forEach(function(entity) {entity.removeEntity()})
 
-        spawnAt(groundManager.x,"Flat")
+        spawnAt(groundManager.x,"Flat",false)
         while(lastElement.getX() <= groundManager.x + groundManager.width) {
             spawnInitialNext()
         }
+        console.log("something")
     }
 
     function stop() {
@@ -45,17 +47,19 @@ EntityBase {
     }
 
     function spawnInitialNext() {
-        spawnAt(lastElement.getX(),"Flat")
+        spawnAt(lastElement.getX(),"Flat", false)
     }
 
     function spawnNext(){
-        spawnAt(groundManager.x + groundManager.width-1,getNextTile())
+        spawnAt(groundManager.x + groundManager.width-1,getNextTile(), true)
     }
 
-    function spawnAt(atX,element) {
+    function spawnAt(atX,element, allowEnemy) {
+        var atY = lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY()
+
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement"+element+".qml"),
                                                         {"resetX": atX,
-                                                         "resetY": lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY(),
+                                                         "resetY": atY,
                                                          "speed": speed,
                                                          "spawnable": ((atX + groundManager.height) >= groundManager.x + groundManager.width),
                                                          "despawnX": groundManager.x,
@@ -64,6 +68,15 @@ EntityBase {
         lastElement = entityManager.getLastAddedEntity()
         currentVerticalOffset += lastElement.getVerticalOffset()
         lastElement.spawnNext.connect(spawnNext)
+
+        if(allowEnemy && nextTileIn < newTileEvery - 1 && lastElement.spawnEnemy(randomGenerator.random())) {
+            entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/Dragon.qml"),
+                                                            {"resetX": atX,
+                                                                "resetY": atY,
+                                                                "speed": speed,
+                                                                "despawnX": groundManager.x,
+                                                                "entityId": enemyId++})
+        }
     }
 
     function getNextTile() {

@@ -6,6 +6,7 @@ GroundElement {
     variationType: "flat"
     width: column.width
     height: column.height
+    property alias colliderAlias: collider
 
     Column {
         id: column
@@ -25,6 +26,7 @@ GroundElement {
     }
 
     BoxCollider {
+        id: collider
         bodyType: Body.Dynamic
         friction: 0.0
         gravityScale: 0.00000
@@ -43,5 +45,10 @@ GroundElement {
         else if(random < 0.66)
             return "Down"
         return "Flat"
+    }
+
+
+    function spawnEnemy(random) {
+        return random < 0.1
     }
 }

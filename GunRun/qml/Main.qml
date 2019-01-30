@@ -21,7 +21,7 @@ GameWindow {
     PhysicsWorld {
         id: physicsWorld
         gravity.y: 9.81
-        debugDrawVisible: true
+//        debugDrawVisible: true
     }
 
 
@@ -76,6 +76,7 @@ GameWindow {
     // game scene
     GameScene {
         id: gameScene
+        opacity: 0
 
         onReturnToMenu: {
             window.state = "menu"
@@ -89,18 +90,12 @@ GameWindow {
             menuScene.startScene()
             gameScene.stopGame()
         }
-
     }
 
     // game scene
     HighscoreScene {
         id: highscoreScene
-
-//        onReturnToMenu: {
-//            window.state = "menu"
-//            menuScene.startScene()
-//            gameScene.stopGame()
-//        }
+        opacity: 0
 
         onPlayLevel: {
             window.state = "game"
@@ -114,7 +109,6 @@ GameWindow {
             menuScene.startScene()
             highscoreScene.stopGame()
         }
-
     }
 
     // menuScene is our first scene, so set the state to menu initially
@@ -126,15 +120,21 @@ GameWindow {
         State {
             name: "menu"
             PropertyChanges {target: menuScene; opacity: 1}
+            PropertyChanges {target: gameScene; opacity: 0}
+            PropertyChanges {target: highscoreScene; opacity: 0}
             PropertyChanges {target: window; activeScene: menuScene}
         },
         State {
             name: "game"
+            PropertyChanges {target: menuScene; opacity: 0}
             PropertyChanges {target: gameScene; opacity: 1}
+            PropertyChanges {target: highscoreScene; opacity: 0}
             PropertyChanges {target: window; activeScene: gameScene}
         },
         State {
             name: "highscore"
+            PropertyChanges {target: menuScene; opacity: 0}
+            PropertyChanges {target: gameScene; opacity: 0}
             PropertyChanges {target: highscoreScene; opacity: 1}
             PropertyChanges {target: window; activeScene: highscoreScene}
         }

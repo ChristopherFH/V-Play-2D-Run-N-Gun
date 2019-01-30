@@ -6,6 +6,7 @@ GroundElement {
     variationType: "down"
     width: column.width
     height: column.height
+    property alias colliderAlias: collider
 
     Column {
         id: column
@@ -31,6 +32,7 @@ GroundElement {
     }
 
     PolygonCollider {
+        id: collider
         bodyType: Body.Dynamic
         friction: 0.0
         gravityScale: 0.00000
