@@ -23,6 +23,8 @@ EntityBase {
     property bool isJumping: false
     property bool isInvulnerable: false
 
+    property int circleColliderWidth: player.width
+
     signal gameOver()
     Component.onCompleted: {
         reset()
@@ -170,8 +172,57 @@ EntityBase {
         }
     }
 
+    //    BoxCollider {
+    //        id: collider1
+    //        anchors.top: player.top
+    //        collisionTestingOnlyMode: true
+    //        friction: 0.0
+    //        fixedRotation: true
+    //        categories: Box.Category12
+    //        collidesWith: Box.Category7 | Box.Category16
+    //        bodyType: Body.Dynamic
+    //        width: player.width * player.scale
+    //        height: (player.height/2) * player.scale
+    //        fixture.onBeginContact: {
+    //            if(other.getBody().target.entityType === "projectile") {
+    //                updateHp()
+    //            }
+    //        }
+    //    }
+
+    //    CircleCollider {
+    //        bullet: true
+    //        force: Qt.point(0,100)
+    //        fixedRotation: false
+    //        anchors.top: collider1.bottom
+    //        x: (parent.width - parent.height/2) / 2 * parent.scale
+    //        collisionTestingOnlyMode: false
+    //        id: collider2
+    //        friction: 0.0
+    //        categories: Box.Category12
+    //        collidesWith: Box.Category7 | Box.Category16
+    //        bodyType: Body.Dynamic
+    //        radius: (circleColliderWidth/2) * parent.scale
+
+    //        fixture.onBeginContact: {
+    //            if(other.getBody().target.entityType === "projectile") {
+    //                updateHp()
+    //            } else if(knightSprite.currentSprite === "jumpend") {
+    //                isJumping = false
+    //                knightSprite.jumpTo("walk")
+    //            }
+    //        }
+    //    }
+
+    //    Rectangle {
+    //        width: colliders.width
+    //        height: colliders.height
+    //        color: "#80ff0000"
+    //        anchors.top: parent.top
+    //    }
 
     PolygonCollider {
+        force: Qt.point(0,1000)
         friction: 0.0
         fixedRotation: true
         categories: Box.Category12
@@ -180,20 +231,23 @@ EntityBase {
         anchors.top: parent.top
         bodyType: Body.Dynamic
 
+        property double cut: 0.33
+
         property double topY: 0
         property double bottomYOffset: 10
         property double bottomY: topY + (parent.height - bottomYOffset) * parent.scale
         property double leftX: 0
         property double rightX: leftX + parent.width * parent.scale
-        property double midY: topY + (parent.height - parent.width/4 - bottomYOffset) * parent.scale
-        property double bottomLeft: (parent.width/4) * parent.scale
-        property double bottomRight: bottomLeft + (parent.width/2) * parent.scale
+        property double midY: topY + (parent.height - parent.width*cut - bottomYOffset) * parent.scale
+        property double bottomLeft: (parent.width*cut) * parent.scale
+        property double bottomRight: bottomLeft + (parent.width*(1.0-cut*2)) * parent.scale
 
         fixture.onBeginContact: {
             if(other.getBody().target.entityType === "projectile") {
                 updateHp()
             } else if(knightSprite.currentSprite === "jumpend") {
                 isJumping = false
+                collider.force = Qt.point(0,1000)
                 knightSprite.jumpTo("walk")
             }
         }
@@ -258,6 +312,7 @@ EntityBase {
         if(isJumping)
             return
 
+        collider.force = Qt.point(0,0)
         isJumping = true
         collider.body.applyForceToCenter(Qt.point(0, -10000));
         knightSprite.jumpTo("jump")
