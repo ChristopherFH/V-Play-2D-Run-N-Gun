@@ -21,7 +21,7 @@ GameWindow {
     PhysicsWorld {
         id: physicsWorld
         gravity.y: 9.81
-        debugDrawVisible: true
+//        debugDrawVisible: true
     }
 
 
@@ -95,12 +95,6 @@ GameWindow {
     // game scene
     HighscoreScene {
         id: highscoreScene
-
-//        onReturnToMenu: {
-//            window.state = "menu"
-//            menuScene.startScene()
-//            gameScene.stopGame()
-//        }
 
         onPlayLevel: {
             window.state = "game"
