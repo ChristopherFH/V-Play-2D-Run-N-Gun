@@ -12,6 +12,7 @@ SceneBase {
     signal returnToMenu
 
     property int startingGroundElementId
+    property int playerPosition: gameScene.width / 10
 
     state: "wait"
 
@@ -78,7 +79,7 @@ SceneBase {
         height: gameScene.height - groundManager.height - 4
         width: 20
         anchors.left: gameScene.left
-        anchors.leftMargin: 9 - player.width * player.scale / 2
+        anchors.leftMargin: playerPosition - 1 - player.circleColliderWidth * player.scale / 2
         anchors.top: gameScene.top
     }
 
@@ -87,7 +88,7 @@ SceneBase {
         height: gameScene.height - groundManager.height - 4
         width: 20
         anchors.left: gameScene.left
-        anchors.leftMargin: 11 + player.width * player.scale
+        anchors.leftMargin: playerPosition + 1 + player.circleColliderWidth * player.scale
         anchors.top: gameScene.top
         visible: false
     }
@@ -199,7 +200,7 @@ SceneBase {
         id: playerToStartAnimation
         target: player
         property: "x"
-        to: 10
+        to: playerPosition
         duration: 3000
     }
 

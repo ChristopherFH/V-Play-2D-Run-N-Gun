@@ -11,7 +11,8 @@ EntityBase {
 
     property int groundElementId: 1
     property int speed: 100
-    height: 25
+    height: 100
+    property int partsize: 25
     property int currentVerticalOffset: 0
 
     property int newTileEvery: 3
@@ -57,7 +58,7 @@ EntityBase {
                                                         {"resetX": atX,
                                                          "resetY": lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY(),
                                                          "speed": speed,
-                                                         "spawnable": ((atX + groundManager.height) >= groundManager.x + groundManager.width),
+                                                         "spawnable": ((atX + partsize) >= groundManager.x + groundManager.width),
                                                          "despawnX": groundManager.x,
                                                          "groundWidth": groundManager.x + groundManager.width,
                                                          "entityId": groundElementId++})
