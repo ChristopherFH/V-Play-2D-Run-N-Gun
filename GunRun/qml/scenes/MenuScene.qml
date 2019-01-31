@@ -34,8 +34,8 @@ SceneBase {
 
     Player {
         id: player
-        resetX: menuScene.gameWindowAnchorItem.width/2 - player.width/2*player.scale
-        resetY: menuScene.gameWindowAnchorItem.height - groundManager.height - player.height * player.scale + player.height / 20 * player.scale
+        resetX: groundManager.width/2 + groundManager.x - player.width/2*player.scale
+        resetY: groundManager.y - player.height * player.scale + player.height / 20 * player.scale
     }
 
     // menu

@@ -205,7 +205,7 @@ EntityBase {
                 updateHp()
             }
 
-            if(entityType === "groundElement" && knightSprite.currentSprite === "jumpend") {
+            if(entityType === "groundElement" && isJumping) {
                 isJumping = false
                 collider.force = Qt.point(0,1000)
                 knightSprite.jumpTo("walk")
@@ -250,6 +250,7 @@ EntityBase {
 
     function reset() {
         setHp()
+        isJumping = false
         player.x = resetX
         player.y = resetY
         collider.body.linearVelocity = Qt.point(0,0)

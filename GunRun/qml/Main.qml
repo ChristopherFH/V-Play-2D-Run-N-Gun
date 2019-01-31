@@ -5,7 +5,7 @@ import "scenes"
 GameWindow {
     id: window
     screenWidth: 960
-    screenHeight: 640
+    screenHeight: 540
 
     Component.onCompleted: {
         menuScene.startScene()
