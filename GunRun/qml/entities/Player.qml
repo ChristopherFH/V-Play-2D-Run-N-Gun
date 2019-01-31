@@ -1,5 +1,6 @@
 import VPlay 2.0
 import QtQuick 2.0
+import QtMultimedia 5.0
 
 EntityBase {
     id: player
@@ -62,6 +63,7 @@ EntityBase {
         onTriggered: {
             entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/FireBall.qml"),
                                                             {"x": (player.x + player.width / 2 * player.scale), "y": player.y + player.height/2*player.scale, "speed": 350});
+
         }
     }
 
@@ -172,58 +174,12 @@ EntityBase {
         }
     }
 
-    //    BoxCollider {
-    //        id: collider1
-    //        anchors.top: player.top
-    //        collisionTestingOnlyMode: true
-    //        friction: 0.0
-    //        fixedRotation: true
-    //        categories: Box.Category12
-    //        collidesWith: Box.Category7 | Box.Category16
-    //        bodyType: Body.Dynamic
-    //        width: player.width * player.scale
-    //        height: (player.height/2) * player.scale
-    //        fixture.onBeginContact: {
-    //            if(other.getBody().target.entityType === "projectile") {
-    //                updateHp()
-    //            }
-    //        }
-    //    }
-
-    //    CircleCollider {
-    //        bullet: true
-    //        force: Qt.point(0,100)
-    //        fixedRotation: false
-    //        anchors.top: collider1.bottom
-    //        x: (parent.width - parent.height/2) / 2 * parent.scale
-    //        collisionTestingOnlyMode: false
-    //        id: collider2
-    //        friction: 0.0
-    //        categories: Box.Category12
-    //        collidesWith: Box.Category7 | Box.Category16
-    //        bodyType: Body.Dynamic
-    //        radius: (circleColliderWidth/2) * parent.scale
-
-    //        fixture.onBeginContact: {
-    //            if(other.getBody().target.entityType === "projectile") {
-    //                updateHp()
-    //            } else if(knightSprite.currentSprite === "jumpend") {
-    //                isJumping = false
-    //                knightSprite.jumpTo("walk")
-    //            }
-    //        }
-    //    }
-
-    //    Rectangle {
-    //        width: colliders.width
-    //        height: colliders.height
-    //        color: "#80ff0000"
-    //        anchors.top: parent.top
-    //    }
-
     PolygonCollider {
         force: Qt.point(0,1000)
         friction: 0.0
+        restitution: 0.0
+        angularDamping: 100
+        linearDamping: 1
         fixedRotation: true
         categories: Box.Category12
         collidesWith: Box.Category7 | Box.Category16
@@ -243,9 +199,13 @@ EntityBase {
         property double bottomRight: bottomLeft + (parent.width*(1.0-cut*2)) * parent.scale
 
         fixture.onBeginContact: {
-            if(other.getBody().target.entityType === "projectile") {
+            var entityType = other.getBody().target.entityType
+            var variationType = other.getBody().target.variationType
+            if(entityType === "projectile") {
                 updateHp()
-            } else if(knightSprite.currentSprite === "jumpend") {
+            }
+
+            if(entityType === "groundElement" && knightSprite.currentSprite === "jumpend") {
                 isJumping = false
                 collider.force = Qt.point(0,1000)
                 knightSprite.jumpTo("walk")
@@ -304,6 +264,7 @@ EntityBase {
 
     function shoot() {
         updateHp()
+        shootSound.play()
         knightSprite.jumpTo("cast")
         shootingTimer.start()
     }
@@ -312,9 +273,20 @@ EntityBase {
         if(isJumping)
             return
 
+        jumpSound.play()
         collider.force = Qt.point(0,0)
         isJumping = true
-        collider.body.applyForceToCenter(Qt.point(0, -10000));
+        collider.body.applyForceToCenter(Qt.point(0, -15000));
         knightSprite.jumpTo("jump")
+    }
+
+    SoundEffectVPlay {
+        id: jumpSound
+        source: "../../assets/audio/jump_10.wav"
+    }
+
+    SoundEffectVPlay {
+        id: shootSound
+        source: "../../assets/audio/fireball.wav"
     }
 }

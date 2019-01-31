@@ -12,7 +12,7 @@ EntityBase {
     property int speed: 350
     property int realFrameRate: 10
     property int maxValueX: 2000
-    property int minValueX: 0
+    property int minValueX: -1000
 
     Component.onCompleted: {
         animation.start()
@@ -46,11 +46,6 @@ EntityBase {
         height: parent.height * parent.scale
         anchors.top: parent.top
         bodyType: Body.Dynamic
-
-        fixture.onEndContact: {
-            if(other.getBody().target.entityType === "border")
-                removeEntity()
-        }
     }
 
     MovementAnimation {
@@ -64,5 +59,15 @@ EntityBase {
         onLimitReached: {
             removeEntity()
         }
+    }
+
+    function explode() {
+        explodeSound.play()
+        removeEntity()
+    }
+
+    SoundEffectVPlay {
+        id: explodeSound
+        source: "../../assets/audio/fireball_explode.wav"
     }
 }
