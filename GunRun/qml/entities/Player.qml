@@ -5,6 +5,7 @@ import QtMultimedia 5.0
 EntityBase {
     id: player
     entityType: "player"
+    z:50
 
     property real upwardforce: -280
     property int resetX: 0
@@ -33,6 +34,34 @@ EntityBase {
 
     onGameOver: {
         knightSprite.running = false
+    }
+
+    Timer {
+        id: pushDownTimer
+        interval: 20
+        running: false
+        repeat: true
+        onTriggered: {
+            if(isJumping)
+                return
+
+            var from = Qt.point(player.x + player.width/2*player.scale,player.y + player.height*player.scale)
+            var to = Qt.point(player.x + player.width/2*player.scale,player.y + player.height*player.scale*2)
+            physicsWorld.rayCast(raycast,from,to)
+        }
+    }
+
+    RayCast {
+        id: raycast
+        maxFraction: 1 //cast ray twice the distance from start to end point
+        onFixtureReported: {
+            var entity = fixture.getBody().target
+
+            if(entity.entityType === "groundElement" && entity.variationType === "down") {
+                console.log("PUSH DOWN")
+                collider.body.applyForceToCenter(Qt.point(0, 10000));
+            }
+        }
     }
 
     Timer {
@@ -182,7 +211,7 @@ EntityBase {
         linearDamping: 1
         fixedRotation: true
         categories: Box.Category12
-        collidesWith: Box.Category7 | Box.Category16
+        collidesWith: Box.Category7 | Box.Category16 | Box.Category11
         id: collider
         anchors.top: parent.top
         bodyType: Body.Dynamic
@@ -203,6 +232,7 @@ EntityBase {
             var variationType = other.getBody().target.variationType
             if(entityType === "projectile") {
                 updateHp()
+                other.getBody().target.removeEntity()
             }
 
             if(entityType === "groundElement" && isJumping) {
@@ -257,6 +287,7 @@ EntityBase {
         knightSprite.running = true
         knightSprite.jumpTo("walk")
         getInitialYTimer.start()
+        pushDownTimer.start()
     }
 
     function die() {
@@ -264,7 +295,6 @@ EntityBase {
     }
 
     function shoot() {
-        updateHp()
         shootSound.play()
         knightSprite.jumpTo("cast")
         shootingTimer.start()

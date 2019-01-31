@@ -70,5 +70,6 @@ DISTFILES += \
     qml/common/SimpleGroundManager.qml \
     qml/entities/BorderElement.qml \
     qml/common/DataManager.qml \
-    qml/scenes/HighscoreScene.qml
+    qml/scenes/HighscoreScene.qml \
+    qml/entities/EnemyFireBall.qml
 

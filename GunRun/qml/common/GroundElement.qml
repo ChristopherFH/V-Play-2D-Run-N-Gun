@@ -64,6 +64,10 @@ EntityBase {
         return 0
     }
 
+    function spawnEnemy(random) {
+        return false
+    }
+
     MovementAnimation {
         id: animation
         target: groundElement

@@ -5,18 +5,42 @@ EntityBase {
     id: dragon
     entityType: "enemy"
     poolingEnabled: true
+    z:40
 
     scale: 0.3
     width: 128
     height: 148
-    property int resetX: 0
-    property int resetY: 0
+    property double resetX: 0
+    property double resetY: 0
+    property int shootAtFrame : 2
     property int realFrameRate: 10
     property int dieFrameCount: 10
     property bool isDying: false
 
+    property int speed: 100
+    property int despawnX: 0
+
     Component.onCompleted: {
         reset()
+    }
+
+    Timer {
+        id: shootTimer
+        interval: 1000
+        running: false
+        repeat: true
+        onTriggered: shoot()
+    }
+
+    Timer {
+        id: spawnProjectileTimer
+        interval: shootAtFrame / realFrameRate * 1000
+        running: false
+        repeat: false
+        onTriggered: {
+            entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/EnemyFireBall.qml"),
+                                                            {"x": (dragon.x - dragon.width / 4 * dragon.scale), "y": dragon.y + dragon.height*0.45*dragon.scale, "speed": 250});
+        }
     }
 
     Timer {
@@ -25,6 +49,7 @@ EntityBase {
         running: false
         repeat: false
         onTriggered: {
+            animation.stop()
             removeEntity()
         }
     }
@@ -77,18 +102,20 @@ EntityBase {
             frameNames: [
                 "attack_01.png",
                 "attack_02.png",
-                "attack_03.png"
+                "attack_03.png",
+                "attack_02.png",
+                "attack_01.png"
             ]
         }
 
         TexturePackerSpriteVPlay {
             name: "win"
             source: "../../assets/img/dragon.json"
-            frameRate: realFrameRate
+            frameRate: realFrameRate/4
             to: {"win": 1}
             frameNames: [
                 "win_01.png",
-                "win_02.png"
+                "win_02.png",
             ]
         }
     }
@@ -111,26 +138,44 @@ EntityBase {
     }
 
     function reset() {
-        dragon.x = resetX - dragon.width * dragon.scale
+        dragon.x = resetX - dragon.width/2 * dragon.scale
         dragon.y = resetY - dragon.height * dragon.scale + dragon.height/15 * dragon.scale
         collider.body.linearVelocity = Qt.point(0,0)
+        shootTimer.start()
         dragonSprite.running = true
+        animation.start()
     }
 
     function die() {
         //stop moving here
         isDying = true
         dragonSprite.jumpTo("die")
+        shootTimer.stop()
         dieTimer.start()
     }
 
     function shoot() {
         //add projectile spawning here
         dragonSprite.jumpTo("cast")
+        spawnProjectileTimer.start()
     }
 
     function win() {
         //add projectile spawning here
+        shootTimer.stop()
         dragonSprite.jumpTo("win")
+        animation.stop()
+    }
+
+    MovementAnimation {
+        id: animation
+        target: dragon
+        property: "x"
+        velocity: -speed
+        running: false
+        minPropertyValue: despawnX - dragon.width
+        onLimitReached: {
+            removeEntity()
+        }
     }
 }

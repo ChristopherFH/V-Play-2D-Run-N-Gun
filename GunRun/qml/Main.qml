@@ -89,7 +89,6 @@ GameWindow {
             menuScene.startScene()
             gameScene.stopGame()
         }
-
     }
 
     // game scene
@@ -108,7 +107,6 @@ GameWindow {
             menuScene.startScene()
             highscoreScene.stopGame()
         }
-
     }
 
     // menuScene is our first scene, so set the state to menu initially
@@ -120,15 +118,21 @@ GameWindow {
         State {
             name: "menu"
             PropertyChanges {target: menuScene; opacity: 1}
+            PropertyChanges {target: gameScene; opacity: 0}
+            PropertyChanges {target: highscoreScene; opacity: 0}
             PropertyChanges {target: window; activeScene: menuScene}
         },
         State {
             name: "game"
+            PropertyChanges {target: menuScene; opacity: 0}
             PropertyChanges {target: gameScene; opacity: 1}
+            PropertyChanges {target: highscoreScene; opacity: 0}
             PropertyChanges {target: window; activeScene: gameScene}
         },
         State {
             name: "highscore"
+            PropertyChanges {target: menuScene; opacity: 0}
+            PropertyChanges {target: gameScene; opacity: 0}
             PropertyChanges {target: highscoreScene; opacity: 1}
             PropertyChanges {target: window; activeScene: highscoreScene}
         }

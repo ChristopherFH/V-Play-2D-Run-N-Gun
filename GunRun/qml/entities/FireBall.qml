@@ -4,7 +4,9 @@ import QtQuick 2.0
 EntityBase {
     id: fireball
     entityType: "projectile"
+    variationType: "good"
     poolingEnabled: true
+    z:30
 
     scale: 0.25
     width: fireballSprite.width
@@ -13,6 +15,11 @@ EntityBase {
     property int realFrameRate: 10
     property int maxValueX: 2000
     property int minValueX: -1000
+
+    property alias sprite: fireballSprite
+    property alias movement: animation
+    property variant category: Box.Category2
+    property variant collidingWith: Box.Category3
 
     Component.onCompleted: {
         animation.start()
@@ -39,12 +46,13 @@ EntityBase {
     BoxCollider {
         fixedRotation: true
         collisionTestingOnlyMode: true
-        categories: Box.Category2
-        collidesWith: Box.Category3
+        categories: category
+        collidesWith: collidingWith
         id: collider
         width: parent.width * parent.scale
         height: parent.height * parent.scale
         anchors.top: parent.top
+        bullet: true
         bodyType: Body.Dynamic
     }
 

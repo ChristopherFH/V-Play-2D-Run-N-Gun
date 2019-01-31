@@ -33,6 +33,7 @@ SceneBase {
     }
 
     Text {
+        z: 100
         id: distance
         visible: false
         text: (groundManager.groundElementId - startingGroundElementId).toString()
@@ -46,6 +47,7 @@ SceneBase {
     }
 
     Row {
+        z: 100
         id: heartPoints_row
         anchors.topMargin: 10
         anchors.leftMargin: 10
@@ -170,6 +172,7 @@ SceneBase {
 
     DialogBase {
         id: gameOverPanel
+        z: 100
         anchors.centerIn: parent
         onPlayAgainPressed: {
             startScene()
@@ -208,6 +211,17 @@ SceneBase {
         groundElements.forEach(function (element) {
             element.y += difference
         })
+
+        var enemies = entityManager.getEntityArrayByType("enemy")
+        enemies.forEach(function (enemy) {
+            enemy.y += difference
+        })
+
+        var projectiles = entityManager.getEntityArrayByType("projectile")
+        projectiles.forEach(function (projectile) {
+            if(projectile.variationType === "bad")
+                projectile.y += difference
+        })
         //        groundManager.y += difference
     }
 
@@ -232,13 +246,18 @@ SceneBase {
     function spawnEnemy() {
         entityManager.createEntityFromUrlWithProperties(
                     Qt.resolvedUrl("../entities/Dragon.qml"), {
-                        "resetX": gameScene.gameWindowAnchorItem.width - 10,
-                        "resetY": gameScene.gameWindowAnchorItem.height - groundManager.height
+                        "resetX": 300, //gameScene.x + gameScene.width - 10,
+                        "resetY": player.y + player.height*player.scale //gameScene.height - groundManager.height
                     })
     }
 
     function startScene(seed) {
         state = "wait"
+        var enemies = entityManager.getEntityArrayByType("enemy")
+        enemies.forEach(function(enemy) {
+            enemy.removeEntity()
+        })
+
         borderRight.visible = false
         cloudManager.start()
         groundManager.start(seed)
@@ -257,6 +276,11 @@ SceneBase {
     function stopGame() {
         if(state === "gameOver")
             return
+
+        var enemies = entityManager.getEntityArrayByType("enemy")
+        enemies.forEach(function(enemy) {
+            enemy.win()
+        })
 
         console.log("STOP GAME")
         // show dialog
