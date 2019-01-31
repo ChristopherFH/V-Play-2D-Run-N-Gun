@@ -14,7 +14,7 @@ EntityBase {
     property int speed: 350
     property int realFrameRate: 10
     property int maxValueX: 2000
-    property int minValueX: 0
+    property int minValueX: -1000
 
     property alias sprite: fireballSprite
     property alias movement: animation
@@ -67,5 +67,15 @@ EntityBase {
         onLimitReached: {
             removeEntity()
         }
+    }
+
+    function explode() {
+        explodeSound.play()
+        removeEntity()
+    }
+
+    SoundEffectVPlay {
+        id: explodeSound
+        source: "../../assets/audio/fireball_explode.wav"
     }
 }

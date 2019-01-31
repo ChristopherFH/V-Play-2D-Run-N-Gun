@@ -32,8 +32,9 @@ GroundElement {
 
     PolygonCollider {
         id: collider
-        bodyType: Body.Dynamic
+        bodyType: Body.Static
         friction: 0.0
+        restitution: 0.0
         gravityScale: 0.00000
         density: 10000
         fixedRotation: true

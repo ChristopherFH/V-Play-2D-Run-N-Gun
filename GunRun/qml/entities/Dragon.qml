@@ -133,6 +133,7 @@ EntityBase {
 
         fixture.onBeginContact: {
             die()
+            other.getBody().target.explode()
         }
     }
 

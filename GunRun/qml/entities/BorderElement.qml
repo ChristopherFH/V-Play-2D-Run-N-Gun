@@ -6,7 +6,7 @@ EntityBase {
     entityType: "border"
 
     BoxCollider {
-        bodyType: Body.Dynamic
+        bodyType: Body.Static
         gravityScale: 0.0
         density: 10000
         fixedRotation: true

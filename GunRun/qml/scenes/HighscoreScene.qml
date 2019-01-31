@@ -8,10 +8,6 @@ import "../game"
 SceneBase {
     id: highscoreScene
 
-    //    Component.onCompleted: {
-    //        myListView.model = loadModel()
-    //    }
-
     signal playLevel(int seed)
 
     ListView {
@@ -29,8 +25,6 @@ SceneBase {
         height: parent.height / 2
 
         model: loadModel()
-//        highlight: Rectangle { color: "lightsteelblue"; radius: 5 }
-//        focus: true
 
         header: Row {
             spacing: myListView.itemRowSpacing
@@ -178,6 +172,7 @@ SceneBase {
                 model.push({index:index, distance: entry.distance, seed: entry.seed});
                 index++;
             });
+            myListView.model = model
             return model
         }
         return []

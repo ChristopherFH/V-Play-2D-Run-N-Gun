@@ -3,7 +3,7 @@ import VPlayApps 1.0
 import QtQuick 2.5
 import "../scenes"
 
-App {
+Item {
     id: app
 
     height: 0

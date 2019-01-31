@@ -1,5 +1,6 @@
 import VPlay 2.0
 import QtQuick 2.0
+import QtMultimedia 5.0
 
 EntityBase {
     id: player
@@ -23,6 +24,8 @@ EntityBase {
     property int fixedY: 0
     property bool isJumping: false
     property bool isInvulnerable: false
+
+    property int circleColliderWidth: player.width
 
     signal gameOver()
     Component.onCompleted: {
@@ -89,6 +92,7 @@ EntityBase {
         onTriggered: {
             entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/FireBall.qml"),
                                                             {"x": (player.x + player.width / 2 * player.scale), "y": player.y + player.height/2*player.scale, "speed": 350});
+
         }
     }
 
@@ -199,9 +203,12 @@ EntityBase {
         }
     }
 
-
     PolygonCollider {
+        force: Qt.point(0,1000)
         friction: 0.0
+        restitution: 0.0
+        angularDamping: 100
+        linearDamping: 1
         fixedRotation: true
         categories: Box.Category12
         collidesWith: Box.Category7 | Box.Category16 | Box.Category11
@@ -209,21 +216,28 @@ EntityBase {
         anchors.top: parent.top
         bodyType: Body.Dynamic
 
+        property double cut: 0.33
+
         property double topY: 0
         property double bottomYOffset: 10
         property double bottomY: topY + (parent.height - bottomYOffset) * parent.scale
         property double leftX: 0
         property double rightX: leftX + parent.width * parent.scale
-        property double midY: topY + (parent.height - parent.width/4 - bottomYOffset) * parent.scale
-        property double bottomLeft: (parent.width/4) * parent.scale
-        property double bottomRight: bottomLeft + (parent.width/2) * parent.scale
+        property double midY: topY + (parent.height - parent.width*cut - bottomYOffset) * parent.scale
+        property double bottomLeft: (parent.width*cut) * parent.scale
+        property double bottomRight: bottomLeft + (parent.width*(1.0-cut*2)) * parent.scale
 
         fixture.onBeginContact: {
-            if(other.getBody().target.entityType === "projectile") {
+            var entityType = other.getBody().target.entityType
+            var variationType = other.getBody().target.variationType
+            if(entityType === "projectile") {
                 updateHp()
                 other.getBody().target.removeEntity()
-            } else if(knightSprite.currentSprite === "jumpend") {
+            }
+
+            if(entityType === "groundElement" && isJumping) {
                 isJumping = false
+                collider.force = Qt.point(0,1000)
                 knightSprite.jumpTo("walk")
             }
         }
@@ -280,6 +294,7 @@ EntityBase {
     }
 
     function shoot() {
+        shootSound.play()
         knightSprite.jumpTo("cast")
         shootingTimer.start()
     }
@@ -288,8 +303,20 @@ EntityBase {
         if(isJumping)
             return
 
+        jumpSound.play()
+        collider.force = Qt.point(0,0)
         isJumping = true
-        collider.body.applyForceToCenter(Qt.point(0, -10000));
+        collider.body.applyForceToCenter(Qt.point(0, -15000));
         knightSprite.jumpTo("jump")
+    }
+
+    SoundEffectVPlay {
+        id: jumpSound
+        source: "../../assets/audio/jump_10.wav"
+    }
+
+    SoundEffectVPlay {
+        id: shootSound
+        source: "../../assets/audio/fireball.wav"
     }
 }
