@@ -60,12 +60,13 @@ EntityBase {
 
         entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement"+element+".qml"),
                                                         {"resetX": atX,
-                                                         "resetY": atY,
-                                                         "speed": speed,
-                                                         "spawnable": ((atX + partsize) >= groundManager.x + groundManager.width),
-                                                         "despawnX": groundManager.x,
-                                                         "groundWidth": groundManager.x + groundManager.width,
-                                                         "entityId": groundElementId++})
+                                                            "resetY": atY,
+                                                            "nextTo": lastElement,
+                                                            "speed": speed,
+                                                            "spawnable": ((atX + partsize) >= groundManager.x + groundManager.width),
+                                                            "despawnX": groundManager.x,
+                                                            "groundWidth": groundManager.x + groundManager.width,
+                                                            "entityId": groundElementId++})
         lastElement = entityManager.getLastAddedEntity()
         currentVerticalOffset += lastElement.getVerticalOffset()
         lastElement.spawnNext.connect(spawnNext)

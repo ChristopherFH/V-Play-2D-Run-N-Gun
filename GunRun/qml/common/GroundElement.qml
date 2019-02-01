@@ -16,6 +16,7 @@ EntityBase {
     property int groundWidth: 0
     property int despawnX: 0
     property int partsize: 25
+    property variant nextTo: null
 
     signal spawnNext()
 
@@ -34,7 +35,13 @@ EntityBase {
     function resetHook(){}
 
     function reset() {
+        if(nextTo !== null) {
+            resetX = nextTo.getX()
+            resetY = nextTo.getY()
+        }
+
         resetHook()
+
         groundElement.x = resetX
         groundElement.y = resetY
 

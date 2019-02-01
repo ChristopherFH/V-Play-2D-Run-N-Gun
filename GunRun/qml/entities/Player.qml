@@ -37,34 +37,6 @@ EntityBase {
     }
 
     Timer {
-        id: pushDownTimer
-        interval: 20
-        running: false
-        repeat: true
-        onTriggered: {
-            if(isJumping)
-                return
-
-            var from = Qt.point(player.x + player.width/2*player.scale,player.y + player.height*player.scale)
-            var to = Qt.point(player.x + player.width/2*player.scale,player.y + player.height*player.scale*2)
-            physicsWorld.rayCast(raycast,from,to)
-        }
-    }
-
-    RayCast {
-        id: raycast
-        maxFraction: 1 //cast ray twice the distance from start to end point
-        onFixtureReported: {
-            var entity = fixture.getBody().target
-
-            if(entity.entityType === "groundElement" && entity.variationType === "down") {
-                console.log("PUSH DOWN")
-                collider.body.applyForceToCenter(Qt.point(0, 10000));
-            }
-        }
-    }
-
-    Timer {
         id: getInitialYTimer
         interval: 1000
         running: false
@@ -287,7 +259,6 @@ EntityBase {
         knightSprite.running = true
         knightSprite.jumpTo("walk")
         getInitialYTimer.start()
-        pushDownTimer.start()
     }
 
     function die() {
