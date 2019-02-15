@@ -13,7 +13,7 @@ Row {
         onClicked: {
             playPressed()
         }
-        source: "../../assets/img/pixel-art/uipack_fixed/PNG/blue_button03.png"
+        source: "../../assets/img/hud/blue_button03.png"
 
         Text {
             color: "white"
@@ -29,7 +29,7 @@ Row {
         onClicked: {
             scorePressed()
         }
-        source: "../../assets/img/pixel-art/uipack_fixed/PNG/blue_button03.png"
+        source: "../../assets/img/hud/blue_button03.png"
 
         Text {
             color: "white"
