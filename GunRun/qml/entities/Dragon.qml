@@ -19,6 +19,7 @@ EntityBase {
 
     property int speed: 100
     property int despawnX: 0
+    property int shootInterval: 1500
 
     Component.onCompleted: {
         reset()
@@ -26,7 +27,7 @@ EntityBase {
 
     Timer {
         id: shootTimer
-        interval: 1000
+        interval: shootInterval
         running: false
         repeat: true
         onTriggered: shoot()

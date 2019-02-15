@@ -284,7 +284,7 @@ EntityBase {
 
     SoundEffectVPlay {
         id: jumpSound
-        source: "../../assets/audio/jump_10.wav"
+        source: "../../assets/audio/jump.wav"
     }
 
     SoundEffectVPlay {

@@ -3,7 +3,6 @@ import VPlayApps 1.0
 import QtQuick 2.0
 import "../common"
 import "../entities"
-import "../game"
 
 SceneBase {
     id: highscoreScene
@@ -103,7 +102,7 @@ SceneBase {
                 onClicked: {
                     playLevel(modelData.seed)
                 }
-                source: "../../assets/img/pixel-art/uipack_fixed/PNG/blue_button03.png"
+                source: "../../assets/img/hud/blue_button03.png"
 
                 Text {
                     color: "white"
