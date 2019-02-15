@@ -13,20 +13,20 @@ GroundElement {
         Image {
             width: partsize
             height: partsize
-            source: "../../../assets/img/tiles/tileBlue_10.png"
+            source: "../../assets/img/tiles/tileBlue_10.png"
         }
 
         Image {
             width: partsize
             height: partsize
-            source: "../../../assets/img/tiles/tileBlue_19.png"
+            source: "../../assets/img/tiles/tileBlue_19.png"
         }
         Repeater {
             model: 20
             Image {
                 width: partsize
                 height: partsize
-                source: "../../../assets/img/tiles/tileBlue_03.png"
+                source: "../../assets/img/tiles/tileBlue_03.png"
             }
         }
     }

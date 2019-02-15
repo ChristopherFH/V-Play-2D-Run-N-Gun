@@ -16,6 +16,11 @@ SceneBase {
 
     state: "wait"
 
+    Level {
+        id: level
+        anchors.fill: parent
+    }
+
     DataManager {
         id: dataManager
     }
@@ -184,6 +189,7 @@ SceneBase {
             borderLeft.x = player.x - borderLeft.width
             borderRight.visible = true
             updateGamestartTimer.stop()
+            level.start()
             spawnEnemy()
             gameScene.state = "running"
             count.text = ""
@@ -213,7 +219,7 @@ SceneBase {
 
         var projectiles = entityManager.getEntityArrayByType("projectile")
         projectiles.forEach(function (projectile) {
-            //if(projectile.variationType === "bad")
+            if(projectile.variationType === "bad")
                 projectile.y += difference
         })
         //        groundManager.y += difference
@@ -257,6 +263,7 @@ SceneBase {
         groundManager.start(seed)
 
         player.reset()
+        level.reset()
         heart_one.source = "../../assets/img/hud/hudHeart_full.png"
         heart_two.source = "../../assets/img/hud/hudHeart_full.png"
         heart_three.source = "../../assets/img/hud/hudHeart_full.png"
@@ -277,6 +284,7 @@ SceneBase {
 
         console.log("STOP GAME")
         // show dialog
+        level.stop()
         player.die()
         groundManager.stop()
         cloudManager.stop()

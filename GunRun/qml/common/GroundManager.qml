@@ -1,6 +1,5 @@
 import VPlay 2.0
 import QtQuick 2.0
-import "../entities/ground"
 
 EntityBase {
     id: groundManager
@@ -59,7 +58,7 @@ EntityBase {
     function spawnAt(atX,element, allowEnemy) {
         var atY = lastElement === null ? groundManager.y + currentVerticalOffset : lastElement.getY()
 
-        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../entities/ground/GroundElement"+element+".qml"),
+        entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("./GroundElement"+element+".qml"),
                                                         {"resetX": atX,
                                                             "resetY": atY,
                                                             "nextTo": lastElement,

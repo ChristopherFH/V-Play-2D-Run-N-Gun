@@ -26,7 +26,7 @@ EntityBase {
 
     Timer {
         id: shootTimer
-        interval: 1600
+        interval: 1000
         running: false
         repeat: true
         onTriggered: shoot()
